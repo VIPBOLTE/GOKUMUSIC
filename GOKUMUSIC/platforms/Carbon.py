@@ -5,8 +5,7 @@ import aiohttp
 from aiohttp import client_exceptions
 
 
-class UnableToFetchCarbon(Exception):
-    pass
+from GOKUMUSIC.utils.exceptions import UnableToFetchCarbon
 
 
 themes = [
@@ -67,7 +66,7 @@ colour = [
 ]
 
 
-class CarbonAPI:
+class Carbon:
     def __init__(self):
         self.language = "auto"
         self.drop_shadow = True
