@@ -1,17 +1,18 @@
 {
-    "name": "🌹⃝𖣔𝐆𝐎𝐊𝐔 𝐌𝐔𝐒𝐈𝐂🥀⛦⃕‌🇮🇳",
-    "description": "A Telegram Music Player Bot, written in Python with Pyrogram and Py-Tgcalls.",
-    "logo": "https://telegra.ph/file/d5b0fb981c5fa3f96c608.jpg",
+    "name": "GOKUMUSIC",
+    "description": "Telegram Group Calls streaming bot with some useful features, written in Python with Pyrogram and Py-Tgcalls. Supporting platforms like Youtube, Spotify, Resso, AppleMusic, Soundcloud and M3u8 Links.",
+    "logo": "https://envs.sh/SY-.jpg",
     "keywords": [
     "python3",
     "telegram",
     "bot",
     "GOKU",
-    "MusicBot",
+    "MUSICBot",
     "telegram-bot",
     "pyrogram"
     ],
- "stack": "container",
+    
+    "stack": "container",
     "env": {
       "API_ID": {
         "description": "Get this value from https://my.telegram.org",
@@ -65,12 +66,12 @@
       },
       "UPSTREAM_REPO": {
         "description": "If you dont know this, Leave as it is",
-        "value": "https://github.com/Badhacker98/BADMUSIC",
+        "value": "https://github.com/VIPBOLTE/GOKUMUSIC",
         "required": true
       },
       "UPSTREAM_BRANCH": {
         "description": "Upstream Repo's Branch Name",
-        "value": "Bad",
+        "value": "main",
         "required": true
       }
     },
