@@ -1,5 +1,5 @@
+from pyrogram.enums import ChatMemberStatus, ChatType
 from pyrogram.types import Message
-from pyrogram.enums import ChatType, ChatMemberStatus
 
 
 async def admin_check(message: Message) -> bool:
@@ -10,8 +10,8 @@ async def admin_check(message: Message) -> bool:
         return False
 
     if message.from_user.id in [
-        777000,  # Telegram Service Notifications
-        1087968824,  # GroupAnonymousBot
+        777000,  
+        1087968824,  
     ]:
         return True
 
@@ -22,7 +22,7 @@ async def admin_check(message: Message) -> bool:
     check_status = await client.get_chat_member(chat_id=chat_id, user_id=user_id)
     if check_status.status not in [
         ChatMemberStatus.OWNER,
-        ChatMemberStatus.ADMINISTRATOR
+        ChatMemberStatus.ADMINISTRATOR,
     ]:
         return False
     else:
