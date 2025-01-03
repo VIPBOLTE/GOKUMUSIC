@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from youtubesearchpython.__future__ import VideosSearch
 
 
-class RessoAPI:
+class Resso:
     def __init__(self):
         self.regex = r"^(https:\/\/m.resso.com\/)(.*)$"
         self.base = "https://m.resso.com/"
@@ -33,7 +33,7 @@ class RessoAPI:
                 des = tag.get("content", None)
                 try:
                     des = des.split("·")[0]
-                except:
+                except Exception:
                     pass
         if des == "":
             return
@@ -52,3 +52,4 @@ class RessoAPI:
             "thumb": thumbnail,
         }
         return track_details, vidid
+      
