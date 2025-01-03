@@ -1,4 +1,3 @@
-# land lelo code *
 from typing import Dict, Union
 
 from motor.motor_asyncio import AsyncIOMotorClient as MongoCli
@@ -51,4 +50,4 @@ async def save_couple(cid: int, date: str, couple: dict, img: str):
         {"chat_id": cid},
         {"$set": {"couple": lovers, "img": img}},
         upsert=True,
-    )
+)
