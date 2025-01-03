@@ -26,9 +26,9 @@ from pytgcalls.types.stream import StreamAudioEnded
 
 import config
 from strings import get_string
-from BADMUSIC import LOGGER, Platform, app
-from BADMUSIC.misc import db
-from BADMUSIC.utils.database import (
+from GOKUMUSIC import LOGGER, Platform, app
+from GOKUMUSIC.misc import db
+from GOKUMUSIC.utils.database import (
     add_active_chat,
     add_active_video_chat,
     get_assistant,
@@ -43,11 +43,11 @@ from BADMUSIC.utils.database import (
     remove_active_video_chat,
     set_loop,
 )
-from BADMUSIC.utils.exceptions import AssistantErr
-from BADMUSIC.utils.formatters import check_duration, seconds_to_min, speed_converter
-from BADMUSIC.utils.inline.play import stream_markup, telegram_markup
-from BADMUSIC.utils.stream.autoclear import auto_clean
-from BADMUSIC.utils.thumbnails import gen_thumb
+from GOKUMUSIC.utils.exceptions import AssistantErr
+from GOKUMUSIC.utils.formatters import check_duration, seconds_to_min, speed_converter
+from GOKUMUSIC.utils.inline.play import stream_markup, telegram_markup
+from GOKUMUSIC.utils.stream.autoclear import auto_clean
+from GOKUMUSIC.utils.thumbnails import gen_thumb
 
 active = []
 autoend = {}
