@@ -6,7 +6,7 @@ from pyrogram.types import InlineKeyboardMarkup
 
 import config
 from GOKUMUSIC import Platform, app
-from GOKUMUSIC.core.call import BAD
+from GOKUMUSIC.core.call import GOKU
 from GOKUMUSIC.misc import db
 from GOKUMUSIC.utils.database import (
     add_active_video_chat,
@@ -40,7 +40,7 @@ async def stream(
         if not await is_video_allowed(chat_id):
             raise AssistantErr(_["play_7"])
     if forceplay:
-        await BAD.force_stop_stream(chat_id)
+        await GOKU.force_stop_stream(chat_id)
     if streamtype == "playlist":
         msg = f"{_['playlist_16']}\n\n"
         count = 0
@@ -87,7 +87,7 @@ async def stream(
                     )
                 except Exception:
                     raise AssistantErr(_["play_16"])
-                await BAD.join_call(
+                await GOKU.join_call(
                     chat_id, original_chat_id, file_path, video=status, image=thumbnail
                 )
                 await put_queue(
@@ -179,7 +179,7 @@ async def stream(
         else:
             if not forceplay:
                 db[chat_id] = []
-            await BAD.join_call(
+            await GOKU.join_call(
                 chat_id, original_chat_id, file_path, video=status, image=thumbnail
             )
             await put_queue(
@@ -246,7 +246,7 @@ async def stream(
             else:
                 if not forceplay:
                     db[chat_id] = []
-                await BAD.join_call(chat_id, original_chat_id, file_path, video=None)
+                await GOKU.join_call(chat_id, original_chat_id, file_path, video=None)
                 await put_queue(
                     chat_id,
                     original_chat_id,
@@ -306,7 +306,7 @@ async def stream(
 
                     if not forceplay:
                         db[chat_id] = []
-                    await BAD.join_call(
+                    await GOKU.join_call(
                         chat_id, original_chat_id, file_path, video=None
                     )
                     await put_queue(
@@ -375,7 +375,7 @@ async def stream(
         else:
             if not forceplay:
                 db[chat_id] = []
-            await BAD.join_call(chat_id, original_chat_id, file_path, video=None)
+            await GOKU.join_call(chat_id, original_chat_id, file_path, video=None)
             await put_queue(
                 chat_id,
                 original_chat_id,
@@ -425,7 +425,7 @@ async def stream(
         else:
             if not forceplay:
                 db[chat_id] = []
-            await BAD.join_call(chat_id, original_chat_id, file_path, video=status)
+            await GOKU.join_call(chat_id, original_chat_id, file_path, video=status)
             await put_queue(
                 chat_id,
                 original_chat_id,
@@ -479,7 +479,7 @@ async def stream(
             n, file_path = await Platform.youtube.video(link)
             if n == 0:
                 raise AssistantErr(_["str_3"])
-            await BAD.join_call(
+            await GOKU.join_call(
                 chat_id,
                 original_chat_id,
                 file_path,
@@ -535,7 +535,7 @@ async def stream(
         else:
             if not forceplay:
                 db[chat_id] = []
-            await BAD.join_call(
+            await GOKU.join_call(
                 chat_id,
                 original_chat_id,
                 link,
