@@ -6,7 +6,7 @@ from pyrogram import idle
 import config
 from config import BANNED_USERS
 from GOKUMUSIC import HELPABLE, LOGGER, app, userbot
-from GOKUMUSIC.core.call import BAD
+from GOKUMUSIC.core.call import GOKU
 from GOKUMUSIC.plugins import ALL_MODULES
 from GOKUMUSIC.utils.database import get_banned_users, get_gbanned
 
@@ -49,8 +49,8 @@ async def init():
     LOGGER("GOKUMUSIC.plugins").info("Successfully Imported All Modules ")
 
     await userbot.start()
-    await BAD.start()
-    await BAD.decorators()
+    await GOKU.start()
+    await GOKU.decorators()
     LOGGER("GOKUMUSIC").info("GOKUMUSIC STARTED SUCCESSFULLY 🕊️")
     await idle()
 
