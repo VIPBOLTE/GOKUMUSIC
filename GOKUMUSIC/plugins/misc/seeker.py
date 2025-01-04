@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from pyrogram.types import InlineKeyboardMarkup
 
 from strings import get_string
-from GOKUMUSIC.core.call import BAD
+from GOKUMUSIC.core.call import GOKU
 from GOKUMUSIC.misc import db
 from GOKUMUSIC.utils.database import (
     get_active_chats,
