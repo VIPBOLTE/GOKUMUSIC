@@ -35,7 +35,7 @@ from GOKUMUSIC.utils.formatters import get_readable_time
 from GOKUMUSIC.utils.functions import MARKDOWN, WELCOMEHELP
 from GOKUMUSIC.utils.inline import alive_panel, music_start_panel, start_pannel
 
-from BADMUSIC.plugins.bot.help import paginate_modules
+from GOKUMUSIC.plugins.bot.help import paginate_modules
 
 loop = asyncio.get_running_loop()
 
