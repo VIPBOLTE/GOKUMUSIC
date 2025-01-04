@@ -2,7 +2,7 @@ import asyncio
 
 from pyrogram import Client, filters
 
-from GOKUMUSIC.utils.bad_ban import admin_filter
+from GOKUMUSIC.utils.goku_ban import admin_filter
 
 SPAM_CHATS = []
 
