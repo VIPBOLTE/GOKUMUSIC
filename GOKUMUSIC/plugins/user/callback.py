@@ -31,7 +31,7 @@ from GOKUMUSIC.utils.database import (
     mute_on,
     set_loop,
 )
-from BADMUSIC.utils.decorators import ActualAdminCB
+from GOKUMUSIC.utils.decorators import ActualAdminCB
 from GOKUMUSIC.utils.decorators.language import languageCB
 from GOKUMUSIC.utils.formatters import seconds_to_min
 from GOKUMUSIC.utils.inline.play import (
