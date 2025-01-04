@@ -5,7 +5,7 @@ from pyrogram import Client, filters
 from config import BANNED_USERS
 from strings import get_command
 from GOKUMUSIC import Platform, app
-from GOKUMUSIC.core.call import BAD
+from GOKUMUSIC.core.call import GOKU
 from GOKUMUSIC.misc import db
 from GOKUMUSIC.utils import AdminRightsCheck, seconds_to_min
 
