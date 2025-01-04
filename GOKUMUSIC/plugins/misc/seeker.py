@@ -59,7 +59,7 @@ async def leave_if_muted():
                             members.append(member)
                     except ValueError:
                         try:
-                            await BAD.stop_stream(chat_id)
+                            await GOKU.stop_stream(chat_id)
                         except Exception:
                             pass
                         continue
@@ -72,7 +72,7 @@ async def leave_if_muted():
                     is_muted = bool(m.is_muted and not m.can_self_unmute)
 
                     if is_muted:
-                        await BAD.stop_stream(chat_id)
+                        await GOKU.stop_stream(chat_id)
                         await set_loop(chat_id, 0)
 
                     del muted[chat_id]
@@ -111,13 +111,13 @@ async def markup_timer():
                         members.append(member)
                 except ValueError:
                     try:
-                        await BAD.stop_stream(chat_id)
+                        await GOKU.stop_stream(chat_id)
                     except Exception:
                         pass
                     continue
 
                 if not members:
-                    await BAD.stop_stream(chat_id)
+                    await GOKU.stop_stream(chat_id)
                     await set_loop(chat_id, 0)
                     continue
 
