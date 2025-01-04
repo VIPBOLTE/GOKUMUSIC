@@ -54,7 +54,7 @@ async def skip(cli, message: Message, _, chat_id):
                                         ),
                                         disable_web_page_preview=True,
                                     )
-                                    await BAD.stop_stream(chat_id)
+                                    await GOKU.stop_stream(chat_id)
                                 except Exception:
                                     return
                                 break
@@ -84,7 +84,7 @@ async def skip(cli, message: Message, _, chat_id):
                     disable_web_page_preview=True,
                 )
                 try:
-                    return await BAD.stop_stream(chat_id)
+                    return await GOKU.stop_stream(chat_id)
                 except Exception:
                     return
         except Exception:
@@ -93,7 +93,7 @@ async def skip(cli, message: Message, _, chat_id):
                     _["admin_10"].format(message.from_user.first_name),
                     disable_web_page_preview=True,
                 )
-                return await BAD.stop_stream(chat_id)
+                return await GOKU.stop_stream(chat_id)
             except Exception:
                 return
     queued = check[0]["file"]
@@ -136,7 +136,7 @@ async def skip(cli, message: Message, _, chat_id):
         except Exception:
             return await mystic.edit_text(_["call_7"])
         try:
-            await BAD.skip_stream(chat_id, file_path, video=status)
+            await GOKU.skip_stream(chat_id, file_path, video=status)
         except Exception:
             return await mystic.edit_text(_["call_7"])
         button = stream_markup(_, videoid, chat_id)
@@ -156,7 +156,7 @@ async def skip(cli, message: Message, _, chat_id):
         await mystic.delete()
     elif "index_" in queued:
         try:
-            await BAD.skip_stream(chat_id, videoid, video=status)
+            await GOKU.skip_stream(chat_id, videoid, video=status)
         except Exception:
             return await message.reply_text(_["call_7"])
         button = telegram_markup(_, chat_id)
@@ -169,7 +169,7 @@ async def skip(cli, message: Message, _, chat_id):
         db[chat_id][0]["markup"] = "tg"
     else:
         try:
-            await BAD.skip_stream(chat_id, queued, video=status)
+            await GOKU.skip_stream(chat_id, queued, video=status)
         except Exception:
             return await message.reply_text(_["call_7"])
         if videoid == "telegram":
