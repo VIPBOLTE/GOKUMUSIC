@@ -1,6 +1,6 @@
 import asyncio
 
-from BADMUSIC import app
+from GOKUMUSIC import app
 from pyrogram import filters
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
