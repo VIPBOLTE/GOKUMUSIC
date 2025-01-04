@@ -23,8 +23,8 @@ from GOKUMUSIC.utils.database import (
     remove_active_chat,
     remove_active_video_chat,
 )
-from BADMUSIC.utils.decorators.language import language
-from BADMUSIC.utils.pastebin import BADbin
+from GOKUMUSIC.utils.decorators.language import language
+from GOKUMUSIC.utils.pastebin import BADbin
 
 # Commands
 GETLOG_COMMAND = get_command("GETLOG_COMMAND")
@@ -43,7 +43,7 @@ async def is_heroku():
 
 
 async def paste_neko(code: str):
-    return await BADbin(code)
+    return await GOKUbin(code)
 
 
 @app.on_message(
@@ -57,7 +57,7 @@ async def log_(client, message, _):
             if HAPP is None:
                 return await message.reply_text(_["heroku_1"])
             data = HAPP.get_log()
-            link = await BADbin(data)
+            link = await GOKUbin(data)
             return await message.reply_text(link)
         else:
             if os.path.exists(config.LOG_FILE_NAME):
