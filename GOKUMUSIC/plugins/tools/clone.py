@@ -32,7 +32,7 @@ async def clone_txt(client, message):
                 API_ID,
                 API_HASH,
                 bot_token=bot_token,
-                plugins=dict(root="BADMUSIC.cplugin"),
+                plugins=dict(root="GOKUMUSIC.cplugin"),
             )
             await ai.start()
             bot = await ai.get_me()
