@@ -3,7 +3,7 @@ from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from GOKUMUSIC import app
 from GOKUMUSIC.misc import SUDOERS as SUDO_USER
-from TheApi import api
+api = https://catbox.moe/user/api.php
 from pyrogram import filters, Client
 
 @Client.on_message(filters.command("tm", prefixes=".") & SUDO_USER)
