@@ -24,7 +24,7 @@ from GOKUMUSIC.utils.database import (
     remove_active_video_chat,
 )
 from GOKUMUSIC.utils.decorators.language import language
-from GOKUMUSIC.utils.pastebin import BADbin
+from GOKUMUSIC.utils.pastebin import GOKUbin
 
 # Commands
 GETLOG_COMMAND = get_command("GETLOG_COMMAND")
