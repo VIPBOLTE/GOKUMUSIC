@@ -13,7 +13,7 @@ from GOKUMUSIC.utils.database import get_client
 
 @Client.on_message(filters.command("setpfp", prefixes=".") & SUDOERS)
 async def set_pfp(client, message):
-    from BADMUSIC.core.userbot import assistants
+    from GOKUMUSIC.core.userbot import assistants
 
     if not message.reply_to_message or not message.reply_to_message.photo:
         return await eor(message, text="Reply to a photo")
