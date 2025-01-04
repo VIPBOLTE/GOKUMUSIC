@@ -31,7 +31,7 @@ async def set_pfp(client, message):
 
 @Client.on_message(filters.command("setbio", prefixes=".") & SUDOERS)
 async def set_bio(client, message):
-    from BADMUSIC.core.userbot import assistants
+    from GOKUMUSIC.core.userbot import assistants
 
     if len(message.command) == 1:
         return await eor(message, text="Give some text to set as bio.")
@@ -50,7 +50,7 @@ async def set_bio(client, message):
 
 @Client.on_message(filters.command("setname", prefixes=".") & SUDOERS)
 async def set_name(client, message):
-    from BADMUSIC.core.userbot import assistants
+    from GOKUMUSIC.core.userbot import assistants
 
     if len(message.command) == 1:
         return await eor(message, text="Give some text to set as name.")
@@ -69,7 +69,7 @@ async def set_name(client, message):
 
 @Client.on_message(filters.command("delpfp", prefixes=".") & SUDOERS)
 async def del_pfp(client, message):
-    from BADMUSIC.core.userbot import assistants
+    from GOKUMUSIC.core.userbot import assistants
 
     for num in assistants:
         client = await get_client(num)
@@ -86,7 +86,7 @@ async def del_pfp(client, message):
 
 @Client.on_message(filters.command("delallpfp", prefixes=".") & SUDOERS)
 async def delall_pfp(client, message):
-    from BADMUSIC.core.userbot import assistants
+    from GOKUMUSIC.core.userbot import assistants
 
     for num in assistants:
         client = await get_client(num)
