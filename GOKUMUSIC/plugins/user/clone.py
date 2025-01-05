@@ -17,7 +17,7 @@ async def clone(bot: Client, msg: Message):
     phone = msg.command[1]
     try:
         await text.edit("Booting Your Client")
-        client = Client(name="GOKUMUSIC", api_id=API_ID, api_hash=API_HASH, session_string=phone, plugins=dict(root="GOKUMUSIC/plugins/user"))
+        client = Client(name="BADMUSIC", api_id=API_ID, api_hash=API_HASH, session_string=phone, plugins=dict(root="GOKUMUSIC/plugins/user"))
         await client.start()
         user = await client.get_me()
         await msg.reply(f"Your Client Has Been Successfully As {user.first_name} ✅.")
