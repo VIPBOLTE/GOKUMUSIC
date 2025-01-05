@@ -12,3 +12,11 @@ def keyboard(buttons_list, row_width: int = 2):
             if not is_url(i[1])
             else Ikb(text=str(i[0]), url=str(i[1]))
         )
+        for i in buttons_list
+    ]
+    buttons.add(*data)
+    return buttons
+
+
+def ikb(data: dict, row_width: int = 2):
+    return keyboard(data.items(), row_width=row_width)
