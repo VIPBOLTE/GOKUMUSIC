@@ -217,7 +217,7 @@ UC_IMG_URL = getenv(
 
 BOT_IMG_URL = getenv(
     "BOT_IMG_URL",
-    "https://envs.sh/SY-.jpg",
+    "https://telegra.ph/file/4dc854f961cd3ce46899b.jpg",
 )
 
 PING_IMG_URL = getenv(
