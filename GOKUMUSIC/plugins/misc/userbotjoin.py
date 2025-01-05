@@ -4,10 +4,10 @@ from pyrogram import filters
 from pyrogram.enums import ChatMemberStatus
 from pyrogram.errors import InviteRequestSent
 
-from GOKUMusic import app
-from GOKUMusic.misc import SUDOERS
-from GOKUMusic.utils.database import get_assistant
-from GOKUMusic.utils.goku_ban import admin_filter
+from GOKUMUSIC import app
+from GOKUMUSIC.misc import SUDOERS
+from GOKUMUSIC.utils.database import get_assistant
+from GOKUMUSIC.utils.goku_ban import admin_filter
 
 links = {}
 
