@@ -13,7 +13,7 @@ from youtubesearchpython.__future__ import VideosSearch
 
 import config
 from config import BANNED_USERS, START_IMG_URL
-from strings import get_string
+from Strings import get_string
 from GOKUMUSIC import HELPABLE, Telegram, YouTube, app
 from GOKUMUSIC.music import SUDOERS, _boot_
 from GOKUMUSIC.plugins.play.playlist import del_plist_msg
