@@ -690,6 +690,14 @@ async def mute_on(chat_id: int):
     mute[chat_id] = True
 async def mute_off(chat_id: int):
     mute[chat_id] = False
+    
+COMMAND_DB = os.path.join(config.TEMP_DB_FOLDER, "command.json")
+    
+def load_command():
+    if os.path.exists(COMMAND_DB):
+        with open(COMMAND_DB, "r") as file:
+            return json.load(file)
+    return []
 command = load_command()    
 async def is_commanddelete_on(chat_id: int) -> bool:
     return chat_id not in command
