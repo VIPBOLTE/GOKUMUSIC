@@ -8,7 +8,7 @@ from pyrogram import filters
 from yt_dlp import YoutubeDL
 
 from GOKUMUSIC import app
-from GOKUMUSIC.misc import SUDOERS
+from GOKUMUSIC.music import SUDOERS
 
 
 def get_random_cookie():
