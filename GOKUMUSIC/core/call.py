@@ -36,7 +36,7 @@ from GOKUMUSIC.utils.formatters import check_duration, seconds_to_min, speed_con
 from GOKUMUSIC.utils.inline.play import stream_markup
 from GOKUMUSIC.utils.stream.autoclear import auto_clean
 from GOKUMUSIC.utils.thumbnails import get_thumb
-from strings import get_string
+from Strings import get_string
 
 autoend = {}
 counter = {}
