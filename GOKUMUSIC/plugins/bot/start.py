@@ -15,7 +15,7 @@ import config
 from config import BANNED_USERS, START_IMG_URL
 from strings import get_string
 from GOKUMUSIC import HELPABLE, Telegram, YouTube, app
-from GOKUMUSIC.music import SUDOERS, SPECIAL_ID, _boot_
+from GOKUMUSIC.music import SUDOERS, _boot_
 from GOKUMUSIC.plugins.play.playlist import del_plist_msg
 from GOKUMUSIC.plugins.sudo.sudoers import sudoers_list
 from GOKUMUSIC.utils.database import (
