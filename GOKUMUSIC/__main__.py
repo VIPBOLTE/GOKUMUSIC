@@ -90,8 +90,12 @@ async def health_check_server(port):
     await site.start()
 
 
+import asyncio
+import traceback
+
 if __name__ == "__main__":
     try:
         asyncio.get_event_loop().run_until_complete(init())
     except Exception as e:
         LOGGER("GOKUMUSIC").error(f"Bot failed to start: {e}")
+        LOGGER("GOKUMUSIC").error(traceback.format_exc())
