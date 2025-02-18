@@ -67,7 +67,7 @@ async def start_comm(client, message: Message, _):
             )
             if config.START_IMG_URL:
                 return await message.reply_photo(
-                    photo=START_IMG_URL,
+                    video=START_IMG_URL,
                     caption=_["help_1"],
                     reply_markup=keyboard,
                 )
@@ -261,22 +261,22 @@ async def testbot(client, message: Message, _):
             chat_photo = groups_photo if groups_photo else START_IMG_URL
         except AttributeError:
             # If there's no chat photo, use the default image
-            chat_photo = START_IMG_URL
+            chat_video = START_IMG_URL
 
         # Get the alive panel and uptime
         out = alive_panel(_)
         uptime = int(time.time() - _boot_)
 
         # Send the response with the group photo or fallback to START_IMG_URL
-        if chat_photo:
+        if chat_video:
             await message.reply_photo(
-                photo=chat_photo,
+                video=chat_video,
                 caption=_["start_7"].format(client.mention, get_readable_time(uptime)),
                 reply_markup=InlineKeyboardMarkup(out),
             )
         else:
             await message.reply_photo(
-                photo=config.START_IMG_URL,
+                video=config.START_IMG_URL,
                 caption=_["start_7"].format(client.mention, get_readable_time(uptime)),
                 reply_markup=InlineKeyboardMarkup(out),
             )
@@ -316,12 +316,12 @@ async def welcome(client, message: Message):
                     )
                     chat_photo = groups_photo if groups_photo else START_IMG_URL
                 except AttributeError:
-                    chat_photo = START_IMG_URL
+                    chat_video = START_IMG_URL
 
                 userbot = await get_assistant(chat_id)
                 out = start_pannel(_)
                 await message.reply_photo(
-                    photo=chat_photo,
+                    video=chat_video,
                     caption=_["start_8"],
                     reply_markup=InlineKeyboardMarkup(out),
                 )
