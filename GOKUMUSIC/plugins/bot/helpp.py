@@ -7,7 +7,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 import config
 from config import BANNED_USERS, START_IMG_URL
-from strings import get_command, get_string
+from Strings import get_command, get_string
 from GOKUMUSIC import HELPABLE, app
 from GOKUMUSIC.utils.database import get_lang, is_commanddelete_on
 from GOKUMUSIC.utils.decorators.language import LanguageStart
