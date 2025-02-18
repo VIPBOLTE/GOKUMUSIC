@@ -264,9 +264,9 @@ from pyrogram import Client, filters
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
 from config import BANNED_USERS
-from strings import helpers
-from ChampuMusic import app
-from ChampuMusic.utils.decorators.language import languageCB
+from Strings import helpers
+from GOKUMUSIC import app
+from GOKUMUSIC.utils.decorators.language import languageCB
 
 
 @app.on_callback_query(filters.regex("music_callback") & ~BANNED_USERS)
