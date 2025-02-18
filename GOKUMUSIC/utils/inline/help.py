@@ -1,6 +1,6 @@
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from config import SUPPORT_GROUP
+from config import SUPPORT_CHAT
 from GOKUMUSIC import app
 
 
@@ -10,7 +10,7 @@ def support_group_markup(_):
             [
                 InlineKeyboardButton(
                     text=_["S_B_3"],
-                    url=SUPPORT_GROUP,
+                    url=SUPPORT_CHAT,
                 ),
             ]
         ]
