@@ -123,7 +123,11 @@ STRING4 = getenv("STRING_SESSION4", None)
 STRING5 = getenv("STRING_SESSION5", None)
 STRING6 = getenv("STRING_SESSION6", None)
 STRING7 = getenv("STRING_SESSION7", None)
+# -------------------------------------
 BANNED_USERS = filters.user()
+YTDOWNLOADER = 1
+LOG = 2
+LOG_FILE_NAME = "musiclogs.txt"
 TEMP_DB_FOLDER = "tempdb"
 adminlist = {}
 lyrical = {}
