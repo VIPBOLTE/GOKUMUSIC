@@ -680,6 +680,14 @@ async def remove_card(cc: str):
         return
     return await cardsdb.delete_one({"cc": cc})
 
-
-
-r
+# Muted
+async def is_muted(chat_id: int) -> bool:
+    mode = mute.get(chat_id)
+    if not mode:
+        return False
+    return mode
+async def mute_on(chat_id: int):
+    mute[chat_id] = True
+async def mute_off(chat_id: int):
+    mute[chat_id] = False
+    
