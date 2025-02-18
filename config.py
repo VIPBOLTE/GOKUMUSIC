@@ -99,4 +99,4 @@ adminlist = {}
 lyrical = {}
 votemode = {}
 autoclean = []
-confirmer = {} the wait
+confirmer = {}
