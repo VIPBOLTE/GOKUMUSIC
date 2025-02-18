@@ -12,7 +12,7 @@ from pyrogram.types import (
 from youtubesearchpython.__future__ import VideosSearch
 
 import config
-from config import BANNED_USERS, START_IMG_URL
+from config import BANNED_USERS
 from Strings import get_string
 from GOKUMUSIC import HELPABLE, Telegram, YouTube, app
 from GOKUMUSIC.music import SUDOERS, _boot_
@@ -37,6 +37,18 @@ from .help import paginate_modules
 
 loop = asyncio.get_running_loop()
 
+#--------------------------
+
+START_IMG_URL = [
+"https://telegra.ph/file/1a3c152717eb9d2e94dc2.mp4",
+"https://graph.org/file/ba7699c28dab379b518ca.mp4",
+"https://graph.org/file/83ebf52e8bbf138620de7.mp4",
+"https://graph.org/file/82fd67aa56eb1b299e08d.mp4",
+"https://graph.org/file/318eac81e3d4667edcb77.mp4",
+"https://graph.org/file/7c1aa59649fbf3ab422da.mp4",
+"https://graph.org/file/2a7f857f31b32766ac6fc.mp4",
+
+]
 
 @app.on_message(group=-1)
 async def ban_new(client, message):
