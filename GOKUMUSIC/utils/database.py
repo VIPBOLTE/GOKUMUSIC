@@ -705,3 +705,9 @@ command = load_command()
 async def is_commanddelete_on(chat_id: int) -> bool:
     return chat_id not in command
 
+async def get_userss(chat_id: int) -> Dict[str, int]:
+    ids = await userdb.find_one({"chat_id": chat_id})
+    if not ids:
+        return {}
+    return ids["vidid"]
+                
