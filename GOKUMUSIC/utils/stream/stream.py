@@ -18,7 +18,7 @@ from GOKUMUSIC.utils.database import (
 from GOKUMUSIC.utils.exceptions import AssistantErr
 from GOKUMUSIC.utils.inline.play import queue_markup, stream_markup, telegram_markup
 from GOKUMUSIC.utils.inline.playlist import close_markup
-from GOKUMUSIC.utils.pastebin import GOKUbin
+from GOKUMUSIC.utils.pastebin import GOKUBin
 from GOKUMUSIC.utils.stream.queue import put_queue, put_queue_index
 from GOKUMUSIC.utils.thumbnails import gen_qthumb, gen_thumb
 
@@ -131,7 +131,7 @@ async def stream(
         if count == 0:
             return
         else:
-            link = await GOKUbin(msg)
+            link = await GOKUBin(msg)
             lines = msg.count("\n")
             if lines >= 17:
                 car = os.linesep.join(msg.split(os.linesep)[:17])
