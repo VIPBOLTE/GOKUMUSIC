@@ -487,12 +487,7 @@ async def about_callback(client: Client, callback_query: CallbackQuery):
             "✦ **ᴛʜɪs ʙᴏᴛ ɪs ᴍᴀᴅᴇ ʙʏ ᴀ sᴋɪʟʟᴇᴅ ᴅᴇᴠᴇʟᴏᴘᴇʀ...**",
             reply_markup=InlineKeyboardMarkup(buttons),
         )
-    except PeerIdInvalid:
-        await callback_query.answer("❌ Unable to resolve user ID. Please try again later.", show_alert=True)
-    except Exception as e:
-        logger.error(f"An unexpected error occurred: {e}")
-        await callback_query.answer("❌ An unexpected error occurred. Please try again later.", show_alert=True)
-
+    
 @app.on_callback_query(filters.regex("feature"))
 async def feature_callback(client: Client, callback_query: CallbackQuery):
     keyboard = [
