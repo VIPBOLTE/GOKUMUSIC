@@ -1,10 +1,10 @@
 from pyrogram import filters
-import random
+
+from config import BANNED_USERS
 from GOKUMUSIC import YouTube, app
 from GOKUMUSIC.utils.channelplay import get_channeplayCB
 from GOKUMUSIC.utils.decorators.language import languageCB
 from GOKUMUSIC.utils.stream.stream import stream
-from config import BANNED_USERS
 
 
 @app.on_callback_query(filters.regex("LiveStream") & ~BANNED_USERS)
@@ -34,7 +34,7 @@ async def play_live_stream(client, CallbackQuery, _):
     )
     try:
         details, track_id = await YouTube.track(vidid, True)
-    except:
+    except Exception:
         return await mystic.edit_text(_["play_3"])
     ffplay = True if fplay == "f" else None
     if not details["duration_min"]:
@@ -53,8 +53,8 @@ async def play_live_stream(client, CallbackQuery, _):
             )
         except Exception as e:
             ex_type = type(e).__name__
-            err = e if ex_type == "AssistantErr" else _["general_2"].format(ex_type)
+            err = e if ex_type == "AssistantErr" else _["general_3"].format(ex_type)
             return await mystic.edit_text(err)
     else:
-        return await mystic.edit_text("» ɴᴏᴛ ᴀ ʟɪᴠᴇ sᴛʀᴇᴀᴍ.")
+        return await mystic.edit_text("Not a live stream")
     await mystic.delete()
