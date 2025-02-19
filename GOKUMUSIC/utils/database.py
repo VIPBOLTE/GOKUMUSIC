@@ -42,7 +42,7 @@ pause = {}
 playmode = {}
 playtype = {}
 skipmode = {}
-
+vlimit = []
 
 async def get_assistant_number(chat_id: int) -> str:
     assistant = assistantdict.get(chat_id)
