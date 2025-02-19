@@ -27,18 +27,6 @@ async def init():
         )
         exit()
 
-    # Initialize sudo and banned users
-    await sudo()
-    try:
-        users = await get_gbanned()
-        for user_id in users:
-            BANNED_USERS.add(user_id)
-        users = await get_banned_users()
-        for user_id in users:
-            BANNED_USERS.add(user_id)
-    except Exception as e:
-        LOGGER("GOKUMUSIC").warning(f"Error fetching banned users: {e}")
-
     # Start bot components
     await app.start()
     for all_module in ALL_MODULES:
