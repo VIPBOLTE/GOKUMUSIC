@@ -10,7 +10,7 @@ from pyrogram.types import InlineKeyboardMarkup, InputMediaPhoto, Message
 from pytgcalls.exceptions import NoActiveGroupCall
 
 import config
-from config import BANNED_USERS, LOG_GROUP_ID, OWNER_ID, lyrical
+from config import BANNED_USERS, LOGGER_ID as LOG_GROUP_ID, OWNER_ID, lyrical
 from GOKUMUSIC import LOGGER, Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
 from GOKUMUSIC.core.call import GOKU
 from GOKUMUSIC.utils import seconds_to_min, time_to_seconds
