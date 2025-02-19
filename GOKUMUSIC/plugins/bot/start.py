@@ -152,7 +152,7 @@ async def start_comm(client, message: Message, _):
                 return
             thumbnail = await YouTube.thumbnail(videoid, True)
             await m.delete()
-            await message.reply_photo(photo=thumbnail, caption=msg)
+            await message.reply_video(photo=thumbnail, caption=msg)
             return
         if name[0:3] == "sud":
             await sudoers_list(client=client, message=message)
@@ -281,7 +281,7 @@ async def testbot(client, message: Message, _):
 
         # Send the response with the group photo or fallback to START_IMG_URL
         if chat_video:
-            await message.reply_photo(
+            await message.reply_video(
                 video=chat_video,
                 caption=_["start_7"].format(client.mention, get_readable_time(uptime)),
                 reply_markup=InlineKeyboardMarkup(out),
