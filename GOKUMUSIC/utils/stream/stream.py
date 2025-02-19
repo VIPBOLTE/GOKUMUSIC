@@ -6,9 +6,9 @@ from typing import Union
 from pyrogram.types import InlineKeyboardMarkup
 
 import config
-from config import LOG_GROUP_ID, OWNER_ID
+from config import LOGGER_ID, OWNER_ID
 from GOKUMUSIC import Carbon, YouTube, app
-from GOKUMUSIC.core.call import LOVE
+from GOKUMUSIC.core.call import GOKU
 from GOKUMUSIC.misc import db
 from GOKUMUSIC.utils.database import (
     add_active_video_chat,
