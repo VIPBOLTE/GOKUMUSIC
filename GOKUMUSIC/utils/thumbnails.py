@@ -67,6 +67,7 @@ def crop_center_circle(img, output_size, border, crop_scale=1.5):
 
 
 async def get_thumb(videoid):
+async def get_thumb(videoid):
     if os.path.isfile(f"cache/{videoid}_v4.png"):
         return f"cache/{videoid}_v4.png"
 
@@ -86,8 +87,10 @@ async def get_thumb(videoid):
         thumbnail = result["thumbnails"][0]["url"].split("?")[0]
         try:
             views = result["viewCount"]["short"]
-        except:
-            views = "Unknown Views"
+        except KeyError:
+            views = "Unknown Views"  # Default value if view count is not available
+        except Exception as e:
+            views = "Unknown Views"  # Fallback for any other exceptions
         try:
             channel = result["channel"]["name"]
         except:
