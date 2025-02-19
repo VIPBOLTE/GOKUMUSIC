@@ -465,28 +465,33 @@ async def tools_callback_cb(client, CallbackQuery, _):
 
         await CallbackQuery.edit_message_text(helpers.THELP_12, reply_markup=keyboard)
 
-
 @app.on_callback_query(filters.regex("developer"))
 async def about_callback(client: Client, callback_query: CallbackQuery):
-    buttons = [
-        [
-            InlineKeyboardButton(text="[ ᴏᴡɴᴇʀ ]", user_id=config.OWNER_ID),
-            InlineKeyboardButton(
-                text="[ sᴜᴅᴏᴇʀs ]", url=f"https://t.me/{app.username}?start=sudo"
-            ),
-        ],
-        [
-            InlineKeyboardButton(text="[ ɪɴsᴛᴀ ]", url=f"https://www.instagram.com/shivanshu_deo/"),
-            InlineKeyboardButton(text="[ ʏᴏᴜᴛᴜʙᴇ ]", url=f"https://www.youtube.com/@itsMeChampu"),
-        ],
-        [
-            InlineKeyboardButton(text="● ʙᴀᴄᴋ ●", callback_data="about")
-        ],  # Use a default label for the back button
-    ]
-    await callback_query.message.edit_text(
-        "✦ **ᴛʜɪs ʙᴏᴛ ɪs ᴍᴀᴅᴇ ʙʏ ᴀ sᴋɪʟʟᴇᴅ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ ᴍᴀᴋᴇ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴇᴀsʏ ᴛᴏ ᴍᴀɴᴀɢᴇ ᴀɴᴅ ᴍᴏʀᴇ ғᴜɴ.**\n\n✦ **ᴡɪᴛʜ ᴊᴜsᴛ ᴀ ғᴇᴡ ᴄʟɪᴄᴋs, ʏᴏᴜ ᴄᴀɴ ᴄᴏɴᴛʀᴏʟ ᴇᴠᴇʀʏᴛʜɪɴɢ—ʟɪᴋᴇ sᴇᴛᴛɪɴɢ ᴜᴘ ᴏᴡɴᴇʀ sᴇᴛᴛɪɴɢs, ᴄʜᴇᴄᴋɪɴɢ sᴜᴅᴏᴇʀs, ᴀɴᴅ ᴇᴠᴇɴ ᴇxᴘʟᴏʀɪɴɢ ɪɴsᴛᴀɢʀᴀᴍ ᴀɴᴅ ʏᴏᴜᴛᴜʙᴇ.**\n\n✦ **ᴛʜᴇ ʙᴏᴛ ɪs ᴅᴇsɪɢɴᴇᴅ ᴛᴏ ʜᴇʟᴘ ʏᴏᴜ ᴍᴀɴᴀɢᴇ ʏᴏᴜʀ ɢʀᴏᴜᴘ sᴍᴏᴏᴛʜʟʏ ᴀɴᴅ ᴇɴᴊᴏʏ ᴍᴜsɪᴄ ᴛᴏᴏ. ᴊᴜsᴛ ᴜsᴇ ᴛʜᴇ ʙᴜᴛᴛᴏɴs ʙᴇʟᴏᴡ ᴀɴᴅ sᴇᴇ ʜᴏᴡ ᴇᴀsʏ ɪᴛ ɪs!**",
-        reply_markup=InlineKeyboardMarkup(buttons),
-    )
+    try:
+        buttons = [
+            [
+                InlineKeyboardButton(text="[ ᴏᴡɴᴇʀ ]", user_id=config.OWNER_ID),
+                InlineKeyboardButton(
+                    text="[ sᴜᴅᴏᴇʀs ]", url=f"https://t.me/{app.username}?start=sudo"
+                ),
+            ],
+            [
+                InlineKeyboardButton(text="[ ɪɴsᴛᴀ ]", url="https://www.instagram.com/shivanshu_deo/"),
+                InlineKeyboardButton(text="[ ʏᴏᴜᴛᴜʙᴇ ]", url="https://www.youtube.com/@itsMeChampu"),
+            ],
+            [
+                InlineKeyboardButton(text="● ʙᴀᴄᴋ ●", callback_data="about")
+            ],
+        ]
+        await callback_query.message.edit_text(
+            "✦ **ᴛʜɪs ʙᴏᴛ ɪs ᴍᴀᴅᴇ ʙʏ ᴀ sᴋɪʟʟᴇᴅ ᴅᴇᴠᴇʟᴏᴘᴇʀ...**",
+            reply_markup=InlineKeyboardMarkup(buttons),
+        )
+    except PeerIdInvalid:
+        await callback_query.answer("❌ Unable to resolve user ID. Please try again later.", show_alert=True)
+    except Exception as e:
+        logger.error(f"An unexpected error occurred: {e}")
+        await callback_query.answer("❌ An unexpected error occurred. Please try again later.", show_alert=True)
 
 
 @app.on_callback_query(filters.regex("feature"))
