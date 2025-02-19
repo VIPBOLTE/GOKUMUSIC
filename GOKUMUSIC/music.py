@@ -5,7 +5,7 @@ import heroku3
 from pyrogram import filters
 
 import config
-from GOKUMUSIC.core.mongo import pymongodb
+from GOKUMUSIC.core.mongo import mongodb
 
 from .logging import LOGGER
 
@@ -49,7 +49,7 @@ def sudo():
         for user_id in OWNER:
             SUDOERS.add(user_id)
     else:
-        sudoersdb = pymongodb.sudoers
+        sudoersdb = mongodb.sudoers
         sudoers = sudoersdb.find_one({"sudo": "sudo"})
         sudoers = [] if not sudoers else sudoers["sudoers"]
         for user_id in OWNER:
