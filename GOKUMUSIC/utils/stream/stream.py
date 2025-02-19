@@ -9,7 +9,7 @@ import config
 from config import LOGGER_ID, OWNER_ID
 from GOKUMUSIC import Carbon, YouTube, app
 from GOKUMUSIC.core.call import GOKU
-from GOKUMUSIC.misc import db
+from GOKUMUSIC.music import db
 from GOKUMUSIC.utils.database import (
     add_active_video_chat,
     is_active_chat,
