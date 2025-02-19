@@ -78,7 +78,7 @@ async def start_comm(client, message: Message, _):
                 paginate_modules(0, HELPABLE, "help", close=True)
             )
             if config.START_IMG_URL:
-                return await message.reply_photo(
+                return await message.reply_video(
                     video=START_IMG_URL,
                     caption=_["help_1"],
                     reply_markup=keyboard,
@@ -246,7 +246,7 @@ async def start_comm(client, message: Message, _):
 
         except AttributeError:
             chat_photo = "assets/nodp.jpg"
-        await message.reply_photo(
+        await message.reply_video(
             photo=chat_photo,
             caption=_["start_2"].format(message.from_user.mention, app.mention),
             reply_markup=InlineKeyboardMarkup(out),
@@ -287,7 +287,7 @@ async def testbot(client, message: Message, _):
                 reply_markup=InlineKeyboardMarkup(out),
             )
         else:
-            await message.reply_photo(
+            await message.reply_video(
                 video=config.START_IMG_URL,
                 caption=_["start_7"].format(client.mention, get_readable_time(uptime)),
                 reply_markup=InlineKeyboardMarkup(out),
@@ -332,7 +332,7 @@ async def welcome(client, message: Message):
 
                 userbot = await get_assistant(chat_id)
                 out = start_pannel(_)
-                await message.reply_photo(
+                await message.reply_video(
                     video=chat_video,
                     caption=_["start_8"],
                     reply_markup=InlineKeyboardMarkup(out),
