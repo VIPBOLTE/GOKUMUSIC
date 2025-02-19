@@ -711,3 +711,9 @@ async def get_userss(chat_id: int) -> Dict[str, int]:
         return {}
     return ids["vidid"]
                 
+async def is_served_private_chat(chat_id: int) -> bool:
+    chat = await privatedb.find_one({"chat_id": chat_id})
+    if not chat:
+        return False
+    return True
+    
