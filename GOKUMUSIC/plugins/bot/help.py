@@ -493,7 +493,6 @@ async def about_callback(client: Client, callback_query: CallbackQuery):
         logger.error(f"An unexpected error occurred: {e}")
         await callback_query.answer("❌ An unexpected error occurred. Please try again later.", show_alert=True)
 
-
 @app.on_callback_query(filters.regex("feature"))
 async def feature_callback(client: Client, callback_query: CallbackQuery):
     keyboard = [
