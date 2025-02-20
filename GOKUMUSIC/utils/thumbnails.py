@@ -2,7 +2,7 @@ import os
 import re
 import aiofiles
 import aiohttp
-from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 from unidecode import unidecode
 from youtubesearchpython.__future__ import VideosSearch
 from GOKUMUSIC import app
@@ -20,14 +20,14 @@ def truncate(text):
     if not text:
         return ["", ""]  # Return empty strings if the text is empty
     
-    list = text.split(" ")
+    words = text.split(" ")
     text1 = ""
     text2 = ""    
-    for i in list:
-        if len(text1) + len(i) < 30:        
-            text1 += " " + i
-        elif len(text2) + len(i) < 30:       
-            text2 += " " + i
+    for word in words:
+        if len(text1) + len(word) < 30:        
+            text1 += " " + word
+        elif len(text2) + len(word) < 30:       
+            text2 += " " + word
 
     text1 = text1.strip()
     text2 = text2.strip()     
@@ -39,22 +39,22 @@ def crop_center_circle(img, output_size, border, crop_scale=1.5):
     larger_size = int(output_size * crop_scale)
     img = img.crop(
         (
-            half_the_width - larger_size/2,
-            half_the_height - larger_size/2,
-            half_the_width + larger_size/2,
-            half_the_height + larger_size/2
+            half_the_width - larger_size / 2,
+            half_the_height - larger_size / 2,
+            half_the_width + larger_size / 2,
+            half_the_height + larger_size / 2
         )
     )
     
-    img = img.resize((output_size - 2*border, output_size - 2*border))
+    img = img.resize((output_size - 2 * border, output_size - 2 * border))
     
     final_img = Image.new("RGBA", (output_size, output_size), "white")
     
-    mask_main = Image.new("L", (output_size - 2*border, output_size - 2*border), 0)
+    mask_main = Image.new("L", (output_size - 2 * border, output_size - 2 * border), 0)
     draw_main = ImageDraw.Draw(mask_main)
-    draw_main.ellipse((0, 0, output_size - 2*border, output_size - 2*border), fill=255)
+    draw_main.ellipse((0, 0, output_size - 2 * border, output_size - 2 * border), fill=255)
     
-    final_img.paste(img, (border, border), mask_main)
+    final_img.paste(img , (border, border), mask_main)
     
     mask_border = Image.new("L", (output_size, output_size), 0)
     draw_border = ImageDraw.Draw(mask_border)
@@ -75,20 +75,26 @@ async def get_thumb(videoid):
             title = result["title"]
             title = re.sub("\W+", " ", title)
             title = title.title()
-        except:
+        except KeyError:
             title = "Unsupported Title"
+        
         try:
             duration = result["duration"]
-        except:
+        except KeyError:
             duration = "Unknown Mins"
+        
         thumbnail = result["thumbnails"][0]["url"].split("?")[0]
+        
         try:
             views = result["viewCount"]["short"]
-        except:
+            if views is None:  # Check if views is None
+                views = "Unknown Views"
+        except KeyError:
             views = "Unknown Views"
+        
         try:
             channel = result["channel"]["name"]
-        except:
+        except KeyError:
             channel = "Unknown Channel"
 
     async with aiohttp.ClientSession() as session:
@@ -106,7 +112,6 @@ async def get_thumb(videoid):
     background = enhancer.enhance(0.6)
     draw = ImageDraw.Draw(background)
     arial = ImageFont.truetype("GOKUMUSIC/assets/assets/font2.ttf", 30)
-    font = ImageFont.truetype("GOKUMUSIC/assets/assets/font.ttf", 30)
     title_font = ImageFont.truetype("GOKUMUSIC/assets/assets/font3.ttf", 45)
 
     circle_thumbnail = crop_center_circle(youtube, 400, 20)
@@ -120,6 +125,8 @@ async def get_thumb(videoid):
     draw.text((text_x_position, 180), title1[0], fill=(255, 255, 255), font=title_font)
     if title1[1]:  # Only draw the second line if it exists
         draw.text((text_x_position, 230), title1[1], fill=(255, 255, 255), font=title_font)
+    
+    # Ensure views is a string before slicing
     draw.text((text_x_position, 320), f"{channel}  |  {views[:23]}", (255, 255, 255), font=arial)
 
     line_length = 580  
@@ -146,8 +153,9 @@ async def get_thumb(videoid):
     background.paste(play_icons, (text_x_position, 450), play_icons)
 
     try:
-        os.remove(f"cache/thumb{videoid}.png")
-    except:
-        pass
+ os.remove(f"cache/thumb{videoid}.png")
+    except Exception as e:
+        print(f"Error removing temporary thumbnail: {e}")
+    
     background.save(f"cache/{videoid}_v4.png")
     return f"cache/{videoid}_v4.png"
