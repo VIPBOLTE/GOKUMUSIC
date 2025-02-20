@@ -54,7 +54,7 @@ def crop_center_circle(img, output_size, border, crop_scale=1.5):
     draw_main = ImageDraw.Draw(mask_main)
     draw_main.ellipse((0, 0, output_size - 2 * border, output_size - 2 * border), fill=255)
     
-    final_img.paste(img , (border, border), mask_main)
+    final_img.paste(img, (border, border), mask_main)
     
     mask_border = Image.new("L", (output_size, output_size), 0)
     draw_border = ImageDraw.Draw(mask_border)
@@ -108,7 +108,7 @@ async def get_thumb(videoid):
     image1 = changeImageSize(1280, 720, youtube)
     image2 = image1.convert("RGBA")
     background = image2.filter(filter=ImageFilter.BoxBlur(20))
-    enhancer = ImageEnhance.Brightness(background)
+    enhancer = ImageEnhance.B rightness(background)
     background = enhancer.enhance(0.6)
     draw = ImageDraw.Draw(background)
     arial = ImageFont.truetype("GOKUMUSIC/assets/assets/font2.ttf", 30)
@@ -126,7 +126,6 @@ async def get_thumb(videoid):
     if title1[1]:  # Only draw the second line if it exists
         draw.text((text_x_position, 230), title1[1], fill=(255, 255, 255), font=title_font)
     
-    # Ensure views is a string before slicing
     draw.text((text_x_position, 320), f"{channel}  |  {views[:23]}", (255, 255, 255), font=arial)
 
     line_length = 580  
@@ -153,7 +152,7 @@ async def get_thumb(videoid):
     background.paste(play_icons, (text_x_position, 450), play_icons)
 
     try:
- os.remove(f"cache/thumb{videoid}.png")
+        os.remove(f"cache/thumb{videoid}.png")
     except Exception as e:
         print(f"Error removing temporary thumbnail: {e}")
     
