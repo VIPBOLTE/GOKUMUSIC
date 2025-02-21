@@ -51,9 +51,7 @@ async def get_thumb(videoid):
 
     title = re.sub("\W+", " ", result.get("title", "Unknown Title")).title()
     duration = result.get("duration")
-    thumbnail_url = result.get("thumbnails", [{}])[0].get("url", "").split("?")[0]
-    views = result.get("viewCount", {}).get("short", "Unknown Views")
-    channel = result.get("channel", {}).get("name", "Unknown Channel")
+    thumbnail_url = result.get("thumbnails", [{}])[0].get("url", "").split("?")[0
     is_live = duration is None
     duration_text = "🔴 LIVE" if is_live else duration
     thumbnail_path = f"cache/thumb{videoid}.png"
