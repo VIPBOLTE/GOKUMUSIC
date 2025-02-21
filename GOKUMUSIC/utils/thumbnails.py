@@ -110,9 +110,8 @@ async def get_thumb(videoid):
     draw.text((right_x, 400), duration_text, (255, 255, 255), font=font)
 
     # **Red Line Drawing with increased width for bolder appearance**
-    # **Red Line Drawing with increased width for bolder appearance**
     line_start_x = blurred_background.width / 2
-    line_start_y = blurred_background.height / 2 + 30  # Move it further up from the center
+    line_start_y = blurred_background.height / 2 - 20  # Adjusted to place it above thum.png
     line_end_x = blurred_background.width - 50  # End at the right side
     line_end_y = line_start_y  # Keep the line horizontal
 
