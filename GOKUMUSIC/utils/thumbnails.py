@@ -11,7 +11,7 @@ from PIL import ImageFilter, ImageFont, ImageOps
 from unidecode import unidecode
 from youtubesearchpython.__future__ import VideosSearch
 
-from BrandrdXMusic import app
+from GOKUMUSIC import app
 from config import YOUTUBE_IMG_URL
 
 def changeImageSize(maxWidth, maxHeight, image):
