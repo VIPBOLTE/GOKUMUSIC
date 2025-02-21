@@ -102,21 +102,20 @@ async def get_thumb(videoid):
     draw.text((text_x, 230), title2, fill=(255, 255, 255), font=title_font)
     draw.text((text_x, 320), f"{channel}  |  {views}", fill=(255, 255, 255), font=font)
 
-    # **Text width calculate karna for duration**
+    # **Text Width Calculation for Duration**
     text_width = font.getlength(duration_text)  # PIL 9.2+ me getlength() use karein
     right_x = blurred_background.width - text_width - 50  # Right side se 50px ka margin
 
-    # Right side me text ko shift karna
+    # **Right side me text ko shift karna**
     draw.text((right_x, 400), duration_text, (255, 255, 255), font=font)
 
-    # **Red Line Drawing**
-    line_start_x = blurred_background.width // 2  # Start from middle of the image width
-    line_start_y = blurred_background.height // 2 + 50  # Start from slightly lower than the middle
-    line_end_x = blurred_background.width - 50  # End the line just before the right edge
-    line_end_y = line_start_y  # Keep the line horizontal
+    # **Red Line Drawing with increased width for bolder appearance**
+    line_start_x = blurred_background.width / 2
+    line_start_y = blurred_background.height / 2 - 50  # Slightly above center
+    line_end_x = blurred_background.width - 50  # End at the right side
+    line_end_y = line_start_y  # Horizontal line
 
-    # Drawing the red line on the image
-    draw.line([line_start_x, line_start_y, line_end_x, line_end_y], fill="red", width=3)  # Red color line
+    draw.line([line_start_x, line_start_y, line_end_x, line_end_y], fill="red", width=6)  # Increased width for boldness
 
     # **Move HD Circle Slightly Right & Lower**
     hd_position = (60, 140)  # Adjusted Right & Down
@@ -129,8 +128,8 @@ async def get_thumb(videoid):
         blurred_background.paste(thum_overlay, (0, 0), thum_overlay)  # Overlay thum.png
     except Exception as e:
         print(f"Error opening thum.png overlay: {e}")
-    
-    # Save the final image with overlay
+
+    # **Save the final image with overlay**
     try:
         os.remove(thumbnail_path)
     except:
