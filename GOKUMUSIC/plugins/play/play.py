@@ -1,4 +1,3 @@
-
 import asyncio
 import random
 import string
@@ -34,9 +33,6 @@ user_command_count = {}
 SPAM_WINDOW_SECONDS = 5  # Set the time window for spam checks (5 seconds for example)
 SPAM_THRESHOLD = 2
 
-# audio = "CQACAgUAAx0CdRUi1wABAUYuZx3rQCprbybe1cDBm-2qK28Pro0AAqcRAAIdP_BUu66Uhq1OkKseBA"
-
-
 @app.on_message(
     filters.command(
         [
@@ -58,7 +54,6 @@ SPAM_THRESHOLD = 2
 async def play_command(
     client, message: Message, _, chat_id, video, channel, playmode, url, fplay
 ):
-
     userbot = await get_assistant(message.chat.id)
     userbot_id = userbot.id
     user_id = message.from_user.id
@@ -154,7 +149,7 @@ async def play_command(
                     )
             except:
                 return await mystic.edit_text(
-                    _["play_8"].format(f"{' | '.join(formats)}")
+                    _["play_ 8"].format(f"{' | '.join(formats)}")
                 )
         if video_telegram.file_size > config.TG_VIDEO_FILESIZE_LIMIT:
             return await mystic.edit_text(_["play_9"])
@@ -263,7 +258,7 @@ async def play_command(
                 streamtype = "playlist"
                 plist_type = "spalbum"
                 img = config.SPOTIFY_ALBUM_IMG_URL
-                cap = _["play_12"].format(message.from_user.first_name)
+                cap = _[" play_12"].format(message.from_user.first_name)
             elif "artist" in url:
                 try:
                     details, plist_id = await Spotify.artist(url)
@@ -351,8 +346,7 @@ async def play_command(
                 )
             try:
                 await GOKU.stream_call(url)
-            except NoActiveGroupCall:
-                await mystic.edit_text(
+            except NoActiveGroupCall await mystic.edit_text(
                     "ᴛʜᴇʀᴇ's ᴀɴ ᴇʀʀᴏʀ ɪɴ ᴛʜᴇ ʙᴏᴛ, ᴩʟᴇᴀsᴇ ʀᴇᴩᴏʀᴛ ɪᴛ ᴛᴏ sᴜᴩᴩᴏʀᴛ ᴄʜᴀᴛ ᴀs sᴏᴏɴ ᴀs ᴩᴏssɪʙʟᴇ."
                 )
                 return await app.send_message(
@@ -474,7 +468,7 @@ async def play_command(
                     message.from_user.id,
                     query,
                     0,
-                    "c" if channel else "g",
+                    "c" if channel else " g",
                     "f" if fplay else "d",
                 )
                 await mystic.delete()
@@ -604,7 +598,7 @@ async def play_playlists_command(client, CallbackQuery, _):
         except:
             return
     try:
-        chat_id, channel = await get_channeplayCB(_, cplay, CallbackQuery)
+        chat_id, channel = await get_channeplayCB (_, cplay, CallbackQuery)
     except:
         return
     user_name = CallbackQuery.from_user.first_name
@@ -739,15 +733,4 @@ async def slider_queries(client, CallbackQuery, _):
 __MODULE__ = "Plᴀʏ"
 __HELP__ = """
 <b>★ ᴘʟᴀʏ , ᴠᴘʟᴀʏ , ᴄᴘʟᴀʏ</b> - Aᴠᴀɪʟᴀʙʟᴇ Cᴏᴍᴍᴀɴᴅs
-<b>★ ᴘʟᴀʏғᴏʀᴄᴇ , ᴠᴘʟᴀʏғᴏʀᴄᴇ , ᴄᴘʟᴀʏғᴏʀᴄᴇ</b> - FᴏʀᴄᴇPʟᴀʏ Cᴏᴍᴍᴀɴᴅs
-
-<b>✦ c sᴛᴀɴᴅs ғᴏʀ ᴄʜᴀɴɴᴇʟ ᴘʟᴀʏ.</b>
-<b>✦ v sᴛᴀɴᴅs ғᴏʀ ᴠɪᴅᴇᴏ ᴘʟᴀʏ.</b>
-<b>✦ force sᴛᴀɴᴅs ғᴏʀ ғᴏʀᴄᴇ ᴘʟᴀʏ.</b>
-
-<b>✧ /play ᴏʀ /vplay ᴏʀ /cplay</b> - Bᴏᴛ ᴡɪʟʟ sᴛᴀʀᴛ ᴘʟᴀʏɪɴɢ ʏᴏᴜʀ ɢɪᴠᴇɴ ǫᴜᴇʀʏ ᴏɴ ᴠᴏɪᴄᴇ ᴄʜᴀᴛ ᴏʀ Sᴛʀᴇᴀᴍ ʟɪᴠᴇ ʟɪɴᴋs ᴏɴ ᴠᴏɪᴄᴇ ᴄʜᴀᴛs.
-
-<b>✧ /playforce ᴏʀ /vplayforce ᴏʀ /cplayforce</b> - Fᴏʀᴄᴇ Pʟᴀʏ sᴛᴏᴘs ᴛʜᴇ ᴄᴜʀʀᴇɴᴛ ᴘʟᴀʏɪɴɢ ᴛʀᴀᴄᴋ ᴏɴ ᴠᴏɪᴄᴇ ᴄʜᴀᴛ ᴀɴᴅ sᴛᴀʀᴛs ᴘʟᴀʏɪɴɢ ᴛʜᴇ sᴇᴀʀᴄʜᴇᴅ ᴛʀᴀᴄᴋ ɪɴsᴛᴀɴᴛʟʏ ᴡɪᴛʜᴏᴜᴛ ᴅɪsᴛᴜʀʙɪɴɢ/ᴄʟᴇᴀʀɪɴɢ ǫᴜᴇᴜᴇ.
-
-<b>✧ /channelplay [Cʜᴀᴛ ᴜsᴇʀɴᴀᴍᴇ ᴏʀ ɪᴅ] ᴏʀ [Dɪsᴀʙʟᴇ]</b> - Cᴏɴɴᴇᴄᴛ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴀ ɢʀᴏᴜᴘ ᴀɴᴅ sᴛʀᴇᴀᴍ ᴍᴜsɪᴄ ᴏɴ ᴄʜᴀɴɴᴇʟ's ᴠᴏɪᴄᴇ ᴄʜᴀᴛ ғʀᴏᴍ ʏᴏᴜʀ ɢʀᴏᴜᴘ.
-"""
+<b>★ ᴘʟᴀʏғ"""
