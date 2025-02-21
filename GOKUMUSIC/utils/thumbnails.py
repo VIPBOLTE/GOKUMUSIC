@@ -2,7 +2,7 @@ import os
 import re
 import aiofiles
 import aiohttp
-from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance, ImageFont
 from unidecode import unidecode
 from youtubesearchpython.__future__ import VideosSearch
 from GOKUMUSIC import app
@@ -78,8 +78,8 @@ async def get_thumb(videoid):
         print(f"Error opening image: {e}")
         return YOUTUBE_IMG_URL
 
-    # Full Image processing (resize)
-    background = youtube.filter(ImageFilter.BoxBlur(20)).convert("RGBA")
+    # **Direct Image (No Blur)** - We won't apply blur anymore
+    background = youtube.convert("RGBA")
     background = ImageEnhance.Brightness(background).enhance(0.6)
     
     # Draw title and information
