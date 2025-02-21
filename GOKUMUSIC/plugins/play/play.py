@@ -346,7 +346,8 @@ async def play_command(
                 )
             try:
                 await GOKU.stream_call(url)
-            except NoActiveGroupCall await mystic.edit_text(
+            except NoActiveGroupCall 
+                await mystic.edit_text(
                     "ᴛʜᴇʀᴇ's ᴀɴ ᴇʀʀᴏʀ ɪɴ ᴛʜᴇ ʙᴏᴛ, ᴩʟᴇᴀsᴇ ʀᴇᴩᴏʀᴛ ɪᴛ ᴛᴏ sᴜᴩᴩᴏʀᴛ ᴄʜᴀᴛ ᴀs sᴏᴏɴ ᴀs ᴩᴏssɪʙʟᴇ."
                 )
                 return await app.send_message(
