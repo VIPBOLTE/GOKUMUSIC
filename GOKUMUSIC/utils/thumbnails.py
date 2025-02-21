@@ -110,8 +110,8 @@ right_x = blurred_background.width - text_width - 50  # Right side se 50px ka ma
 draw.text((right_x, 400), duration_text, (255, 255, 255), font=font)
 
     # **Move HD Circle Slightly Right & Lower**
-    hd_position = (60, 140)  # Adjusted Right & Down
-    blurred_background.paste(hd_thumbnail, hd_position, hd_thumbnail)
+hd_position = (60, 140)  # Adjusted Right & Down
+blurred_background.paste(hd_thumbnail, hd_position, hd_thumbnail)
 
     # **Overlay the thum.png**
     try:
