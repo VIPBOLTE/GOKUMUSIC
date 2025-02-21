@@ -111,7 +111,7 @@ async def get_thumb(videoid):
                 await f.close()
             else:
                 # If the thumbnail fetch fails, use the default image
-                async with session .get("https://example.com/default_thumbnail.png") as default_resp:
+                async with session .get(YOUTUBE_IMG_URL) as default_resp:
                     if default_resp.status == 200:
                         f = await aiofiles.open(f"cache/thumb{videoid}.png", mode="wb")
                         await f.write(await default_resp.read())
