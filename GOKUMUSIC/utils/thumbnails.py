@@ -80,7 +80,7 @@ async def get_thumb(videoid):
     blurred_background = ImageEnhance.Brightness(blurred_background).enhance(0.6)
     
     # **Creating HD Circular Thumbnail**
-    circle_size = 350  # Adjust size of the circle
+    circle_size = 400  # Adjust size of the circle
     hd_thumbnail = youtube.resize((circle_size, circle_size), Image.ANTIALIAS)
     
     # Create a circular mask for HD image
