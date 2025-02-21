@@ -111,9 +111,9 @@ async def get_thumb(videoid):
 
     # **Red Line Drawing with increased width for bolder appearance**
     line_start_x = blurred_background.width / 2
-    line_start_y = blurred_background.height / 2 - 50  # Slightly above center
+    line_start_y = blurred_background.height / 2 + 50  # Move it further down from the center
     line_end_x = blurred_background.width - 50  # End at the right side
-    line_end_y = line_start_y  # Horizontal line
+    line_end_y = line_start_y  # Keep the line horizontal
 
     draw.line([line_start_x, line_start_y, line_end_x, line_end_y], fill="red", width=6)  # Increased width for boldness
 
