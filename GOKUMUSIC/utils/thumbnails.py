@@ -111,7 +111,7 @@ async def get_thumb(videoid):
 
     # **Red Line Drawing**
     line_start_x = blurred_background.width // 2  # Start from middle of the image width
-    line_start_y = blurred_background.height // 2 - 50  # Start from middle of the height, slightly above
+    line_start_y = blurred_background.height // 2 + 50  # Start from slightly lower than the middle
     line_end_x = blurred_background.width - 50  # End the line just before the right edge
     line_end_y = line_start_y  # Keep the line horizontal
 
