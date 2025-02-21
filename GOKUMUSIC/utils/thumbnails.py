@@ -73,14 +73,14 @@ async def get_thumb(videoid):
     
     try:
         for result in (await results.next())["result"]:
-            # Debugging: Print the result to see its structure
-            print("Result:", result)
-
             title = result.get("title", "Unsupported Title")
             title = re.sub("\W+", " ", title)
             title = title.title()
 
-            duration = result.get("duration", "Unknown Mins")
+            # Attempt to get duration
+            duration = result.get("duration", None)  # Default to None if not found
+            if duration is None or duration.strip() == "":
+                duration = "Live"  # Set to "Live" if duration is None or empty
 
             # Attempt to get the thumbnail URL
             try:
@@ -103,6 +103,7 @@ async def get_thumb(videoid):
             if resp.status == 200:
                 f = await aiofiles.open(f"cache/thumb{videoid}.png", mode="wb")
                 await f.write(await resp.read())
+                await f.write()
                 await f.close()
             else:
                 # If the thumbnail fetch fails, use the default image
@@ -132,7 +133,7 @@ async def get_thumb(videoid):
     title1 = truncate(title)
     draw.text((text_x_position, 180), title1[0], fill=(255, 255, 255), font=title_font)
     if title1[1]:  # Only draw the second line if it exists
-        draw.text((text_x_position, 230), title1[1], fill=(255 , 255, 255), font=title_font)
+        draw.text((text_x_position, 230), title1[1], fill=(255, 255, 255), font=title_font)
     
     draw.text((text_x_position, 320), f"{channel}  |  {views[:23]}", (255, 255, 255), font=arial)
 
@@ -152,8 +153,9 @@ async def get_thumb(videoid):
     circle_position = (end_point_red[0], end_point_red[1])
     draw.ellipse([circle_position[0] - circle_radius, circle_position[1] - circle_radius,
                   circle_position[0] + circle_radius, circle_position[1] + circle_radius], fill="red")
-    draw.text((text_x_position, 400), "00:00", (255, 255, 255), font=arial)
-    draw.text((1080, 400), duration, (255, 255, 255), font=arial)
+    
+    # Draw "Live" if duration is None or empty
+    draw.text((text_x_position, 400), duration, (255, 255, 255), font=arial)
 
     play_icons = Image.open("GOKUMUSIC/assets/assets/play_icons.png")
     play_icons = play_icons.resize((580, 62))
