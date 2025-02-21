@@ -70,38 +70,33 @@ async def get_thumb(videoid):
 
     url = f"https://www.youtube.com/watch?v={videoid}"
     results = VideosSearch(url, limit=1)
-    for result in (await results.next())["result"]:
-        try:
-            title = result["title"]
+    
+    try:
+        for result in (await results.next())["result"]:
+            # Debugging: Print the result to see its structure
+            print("Result:", result)
+
+            title = result.get("title", "Unsupported Title")
             title = re.sub("\W+", " ", title)
             title = title.title()
-        except KeyError:
-            title = "Unsupported Title"
-        
-        try:
-            duration = result["duration"]
-        except KeyError:
-            duration = "Unknown Mins"
-        
-        # Attempt to get the thumbnail URL
-        try:
-            thumbnail = result["thumbnails"][0]["url"].split("?")[0]
-        except (KeyError, IndexError):
-            thumbnail = YOUTUBE_IMG_URL  # Default image URL
 
-        # Attempt to get views
-        try:
-            views = result["viewCount"]["short"]
-            if views is None:  # Check if views is None
-                views = "Unknown Views"
-        except KeyError:
-            views = "Unknown Views"
-        
-        # Attempt to get channel name
-        try:
-            channel = result["channel"]["name"]
-        except KeyError:
-            channel = "Unknown Channel"
+            duration = result.get("duration", "Unknown Mins")
+
+            # Attempt to get the thumbnail URL
+            try:
+                thumbnail = result["thumbnails"][0]["url"].split("?")[0]
+            except (KeyError, IndexError):
+                thumbnail = YOUTUBE_IMG_URL  # Default image URL
+
+            # Attempt to get views
+            views = result.get("viewCount", {}).get("short", "Unknown Views")
+
+            # Attempt to get channel name
+            channel = result.get("channel", {}).get("name", "Unknown Channel")
+
+    except Exception as e:
+        print(f"Error processing video ID {videoid}: {e}")
+        return YOUTUBE_IMG_URL  # Return a default image URL or handle as needed
 
     async with aiohttp.ClientSession() as session:
         async with session.get(thumbnail) as resp:
@@ -111,7 +106,7 @@ async def get_thumb(videoid):
                 await f.close()
             else:
                 # If the thumbnail fetch fails, use the default image
-                async with session .get(YOUTUBE_IMG_URL) as default_resp:
+                async with session.get(YOUTUBE_IMG_URL) as default_resp:
                     if default_resp.status == 200:
                         f = await aiofiles.open(f"cache/thumb{videoid}.png", mode="wb")
                         await f.write(await default_resp.read())
@@ -137,7 +132,7 @@ async def get_thumb(videoid):
     title1 = truncate(title)
     draw.text((text_x_position, 180), title1[0], fill=(255, 255, 255), font=title_font)
     if title1[1]:  # Only draw the second line if it exists
-        draw.text((text_x_position, 230), title1[1], fill=(255, 255, 255), font=title_font)
+        draw.text((text_x_position, 230), title1[1], fill=(255 , 255, 255), font=title_font)
     
     draw.text((text_x_position, 320), f"{channel}  |  {views[:23]}", (255, 255, 255), font=arial)
 
