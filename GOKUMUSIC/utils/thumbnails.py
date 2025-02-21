@@ -105,8 +105,8 @@ async def get_thumb(videoid):
     # LIVE or Duration Display
     draw.text((text_x, 400), duration_text, (255, 255, 255), font=font)
 
-    # **Paste HD Circle on LEFT Side**
-    hd_position = (50, 100)  # Adjusted for left placement
+    # **Move HD Circle Slightly Right & Lower**
+    hd_position = (150, 180)  # Adjusted Right & Down
     blurred_background.paste(hd_thumbnail, hd_position, hd_thumbnail)
 
     # **Overlay the thum.png**
