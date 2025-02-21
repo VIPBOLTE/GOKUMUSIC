@@ -31,7 +31,6 @@ def truncate(text):
             text2 += " " + word
     return text1.strip(), text2.strip()
 
-# Inside the get_thumb function
 async def get_thumb(videoid):
     """Fetches video thumbnail and generates an image with overlay."""
     cached_path = f"cache/{videoid}_v4.png"
@@ -109,6 +108,15 @@ async def get_thumb(videoid):
 
     # Right side me text ko shift karna
     draw.text((right_x, 400), duration_text, (255, 255, 255), font=font)
+
+    # **Red Line Drawing**
+    line_start_x = blurred_background.width // 2  # Start from middle of the image width
+    line_start_y = blurred_background.height // 2 - 50  # Start from middle of the height, slightly above
+    line_end_x = blurred_background.width - 50  # End the line just before the right edge
+    line_end_y = line_start_y  # Keep the line horizontal
+
+    # Drawing the red line on the image
+    draw.line([line_start_x, line_start_y, line_end_x, line_end_y], fill="red", width=3)  # Red color line
 
     # **Move HD Circle Slightly Right & Lower**
     hd_position = (60, 140)  # Adjusted Right & Down
