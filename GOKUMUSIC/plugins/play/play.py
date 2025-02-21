@@ -149,7 +149,7 @@ async def play_command(
                     )
             except:
                 return await mystic.edit_text(
-                    _["play_ 8"].format(f"{' | '.join(formats)}")
+                    _["play_8"].format(f"{' | '.join(formats)}")
                 )
         if video_telegram.file_size > config.TG_VIDEO_FILESIZE_LIMIT:
             return await mystic.edit_text(_["play_9"])
@@ -258,7 +258,7 @@ async def play_command(
                 streamtype = "playlist"
                 plist_type = "spalbum"
                 img = config.SPOTIFY_ALBUM_IMG_URL
-                cap = _[" play_12"].format(message.from_user.first_name)
+                cap = _["play_12"].format(message.from_user.first_name)
             elif "artist" in url:
                 try:
                     details, plist_id = await Spotify.artist(url)
@@ -468,7 +468,7 @@ async def play_command(
                     message.from_user.id,
                     query,
                     0,
-                    "c" if channel else " g",
+                    "c" if channel else "g",
                     "f" if fplay else "d",
                 )
                 await mystic.delete()
