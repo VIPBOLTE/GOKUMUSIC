@@ -87,7 +87,7 @@ async def get_thumb(videoid):
         try:
             thumbnail = result["thumbnails"][0]["url"].split("?")[0]
         except (KeyError, IndexError):
-            thumbnail = "https://example.com/default_thumbnail.png"  # Default image URL
+            thumbnail = YOUTUBE_IMG_URL  # Default image URL
 
         # Attempt to get views
         try:
