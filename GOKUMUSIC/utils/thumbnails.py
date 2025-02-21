@@ -8,19 +8,6 @@ from youtubesearchpython.__future__ import VideosSearch
 from GOKUMUSIC import app
 from config import YOUTUBE_IMG_URL
 
-def changeImageSize(maxWidth, maxHeight, image):
-    return image.resize((maxWidth, maxHeight))
-
-def truncate(text):
-    words = text.split(" ")
-    text1, text2 = "", ""
-    for word in words:
-        if len(text1) + len(word) < 30:
-            text1 += " " + word
-        elif len(text2) + len(word) < 30:
-            text2 += " " + word
-    return text1.strip(), text2.strip()
-
 async def download_image(url, path):
     """Downloads an image from the URL and saves it."""
     try:
@@ -33,6 +20,16 @@ async def download_image(url, path):
     except Exception as e:
         print(f"Error downloading image: {e}")
     return None  
+
+def truncate(text):
+    words = text.split(" ")
+    text1, text2 = "", ""
+    for word in words:
+        if len(text1) + len(word) < 30:
+            text1 += " " + word
+        elif len(text2) + len(word) < 30:
+            text2 += " " + word
+    return text1.strip(), text2.strip()
 
 async def get_thumb(videoid):
     """Fetches video thumbnail and generates an image with overlay."""
@@ -108,8 +105,8 @@ async def get_thumb(videoid):
     # LIVE or Duration Display
     draw.text((text_x, 400), duration_text, (255, 255, 255), font=font)
 
-    # **Paste HD Circle on Right Side**
-    hd_position = (blurred_background.width - circle_size - 50, 100)  # Adjust position
+    # **Paste HD Circle on LEFT Side**
+    hd_position = (50, 100)  # Adjusted for left placement
     blurred_background.paste(hd_thumbnail, hd_position, hd_thumbnail)
 
     # **Overlay the thum.png**
