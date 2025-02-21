@@ -51,7 +51,7 @@ async def get_thumb(videoid):
 
     title = re.sub("\W+", " ", result.get("title", "Unknown Title")).title()
     duration = result.get("duration")
-    thumbnail_url = result.get("thumbnails", [{}])[0].get("url", "").split("?")[0
+    thumbnail_url = result.get("thumbnails", [{}])[0].get("url", "").split("?")[0]
     is_live = duration is None
     duration_text = "🔴 LIVE" if is_live else duration
     thumbnail_path = f"cache/thumb{videoid}.png"
@@ -91,7 +91,6 @@ async def get_thumb(videoid):
     
     draw.text((text_x, 180 + offset_y), title1, fill=(255, 255, 255), font=title_font)
     draw.text((text_x, 230 + offset_y), title2, fill=(255, 255, 255), font=title_font)
-    draw.text((text_x, 320 + offset_y), f"{channel}  |  {views}", fill=(255, 255, 255), font=font)
 
     text_width = font.getlength(duration_text)
     right_x = blurred_background.width - text_width - 50  
