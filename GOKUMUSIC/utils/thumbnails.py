@@ -91,10 +91,15 @@ async def get_thumb(videoid):
     # Apply the mask to the HD thumbnail
     hd_thumbnail.putalpha(circle_mask)
 
-    # **Add black border around the circular image**
+    # **Add circular black border**
     border_thickness = 10  # Adjust thickness of the border
     border_circle = Image.new("RGBA", (circle_size + border_thickness * 2, circle_size + border_thickness * 2), (0, 0, 0, 255))
-    border_circle.paste(hd_thumbnail, (border_thickness, border_thickness), hd_thumbnail)
+    border_mask = Image.new("L", (circle_size + border_thickness * 2, circle_size + border_thickness * 2), 0)
+    border_draw = ImageDraw.Draw(border_mask)
+    
+    # Draw the circular border
+    border_draw.ellipse((0, 0, circle_size + border_thickness * 2, circle_size + border_thickness * 2), fill=255)
+    border_circle.putalpha(border_mask)
 
     # **Draw Text on Image**
     draw = ImageDraw.Draw(blurred_background)
@@ -129,6 +134,14 @@ async def get_thumb(videoid):
 
     # **Draw White Part**
     draw.line([white_start_x, line_start_y, line_end_x, line_start_y], fill="white", width=10)  # White part of the line
+
+    # **Red Dot at the junction**
+    red_dot_radius = 8
+    red_dot_x = red_end_x  # Red dot at the end of the red part
+    red_dot_y = line_start_y
+
+    # Draw the red dot
+    draw.ellipse((red_dot_x - red_dot_radius, red_dot_y - red_dot_radius, red_dot_x + red_dot_radius, red_dot_y + red_dot_radius), fill="red")
 
     # **Move HD Circle Slightly Right & Lower**
     hd_position = (60, 140)  # Adjusted Right & Down
