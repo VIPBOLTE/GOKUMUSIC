@@ -123,7 +123,7 @@ async def get_thumb(videoid):
     draw.text((right_x, 400), duration_text, (255, 255, 255), font=font)
 
     # **Red and White Line Drawing with 3/4 Red and 1/4 White**
-    line_start_x = blurred_background.width / 2
+    line_start_x = blurred_background.width / 2 - int(2 * 37.795)  # Adjusted 2 cm to the left (about 75 pixels)
     line_start_y = blurred_background.height / 2 - 20  # Adjusted to place it above thum.png
     line_end_x = blurred_background.width - 50  # End at the right side
 
