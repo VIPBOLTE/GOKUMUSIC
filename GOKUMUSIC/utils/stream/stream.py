@@ -417,5 +417,5 @@ async def stream(
                 reply_markup=InlineKeyboardMarkup(button),
             )
             db[chat_id][0]["mystic"] = run
-            db[chat_id][0 ]["markup"] = "tg"
+            db[chat_id][0]["markup"] = "tg"
             await mystic.delete()
