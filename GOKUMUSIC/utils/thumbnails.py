@@ -83,8 +83,13 @@ async def get_thumb(videoid):
         except KeyError:
             duration = "Unknown Mins"
         
-        thumbnail = result["thumbnails"][0]["url"].split("?")[0]
-        
+        # Attempt to get the thumbnail URL
+        try:
+            thumbnail = result["thumbnails"][0]["url"].split("?")[0]
+        except (KeyError, IndexError):
+            thumbnail = "https://example.com/default_thumbnail.png"  # Default image URL
+
+        # Attempt to get views
         try:
             views = result["viewCount"]["short"]
             if views is None:  # Check if views is None
@@ -92,6 +97,7 @@ async def get_thumb(videoid):
         except KeyError:
             views = "Unknown Views"
         
+        # Attempt to get channel name
         try:
             channel = result["channel"]["name"]
         except KeyError:
@@ -103,6 +109,13 @@ async def get_thumb(videoid):
                 f = await aiofiles.open(f"cache/thumb{videoid}.png", mode="wb")
                 await f.write(await resp.read())
                 await f.close()
+            else:
+                # If the thumbnail fetch fails, use the default image
+                async with session .get("https://example.com/default_thumbnail.png") as default_resp:
+                    if default_resp.status == 200:
+                        f = await aiofiles.open(f"cache/thumb{videoid}.png", mode="wb")
+                        await f.write(await default_resp.read())
+                        await f.close()
 
     youtube = Image.open(f"cache/thumb{videoid}.png")
     image1 = changeImageSize(1280, 720, youtube)
