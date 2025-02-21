@@ -41,7 +41,7 @@ async def get_thumb(videoid):
 
     title = re.sub("\W+", " ", result.get("title", "Unknown Title")).title()
     duration = result.get("duration")  
-    thumbnail = result.get("thumbnails", [{}])[0].get("url", "").split("?")[0]
+    thumbnail_url = result.get("thumbnails", [{}])[0].get("url", "").split("?")[0]
     views = result.get("viewCount", {}).get("short", "Unknown Views")
     channel = result.get("channel", {}).get("name", "Unknown Channel")
 
@@ -49,13 +49,26 @@ async def get_thumb(videoid):
     is_live = duration is None
     duration_text = "🔴 LIVE" if is_live else duration
 
-    async with aiohttp.ClientSession() as session:
-        async with session.get(thumbnail) as resp:
-            if resp.status == 200:
-                async with aiofiles.open(f"cache/thumb{videoid}.png", mode="wb") as f:
-                    await f.write(await resp.read())
+    thumbnail_path = f"cache/thumb{videoid}.png"
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(thumbnail_url) as resp:
+                if resp.status == 200:
+                    async with aiofiles.open(thumbnail_path, mode="wb") as f:
+                        await f.write(await resp.read())
+                else:
+                    print("Error: Failed to fetch thumbnail, using default.")
+                    return YOUTUBE_IMG_URL
+    except Exception as e:
+        print(f"Exception in downloading thumbnail: {e}")
+        return YOUTUBE_IMG_URL
 
-    youtube = Image.open(f"cache/thumb{videoid}.png")
+    try:
+        youtube = Image.open(thumbnail_path)
+    except Exception as e:
+        print(f"Error opening image: {e}")
+        return YOUTUBE_IMG_URL
+
     background = youtube.filter(ImageFilter.BoxBlur(20)).convert("RGBA")
     background = ImageEnhance.Brightness(background).enhance(0.6)
     draw = ImageDraw.Draw(background)
@@ -73,7 +86,7 @@ async def get_thumb(videoid):
     draw.text((text_x, 400), duration_text, (255, 255, 255), font=font)
 
     try:
-        os.remove(f"cache/thumb{videoid}.png")
+        os.remove(thumbnail_path)
     except:
         pass
     background.save(f"cache/{videoid}_v4.png")
