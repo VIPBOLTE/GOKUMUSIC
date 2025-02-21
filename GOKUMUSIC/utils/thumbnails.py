@@ -87,30 +87,41 @@ async def get_thumb(videoid):
     title_font = ImageFont.truetype("GOKUMUSIC/assets/assets/font3.ttf", 45)
     text_x = 565
     title1, title2 = truncate(title)
-    draw.text((text_x, 180), title1, fill=(255, 255, 255), font=title_font)
-    draw.text((text_x, 230), title2, fill=(255, 255, 255), font=title_font)
-    draw.text((text_x, 320), f"{channel}  |  {views}", fill=(255, 255, 255), font=font)
+    
+    # Offset by 3 cm (113 pixels)
+    offset_y = 113  
+    
+    draw.text((text_x, 180 + offset_y), title1, fill=(255, 255, 255), font=title_font)
+    draw.text((text_x, 230 + offset_y), title2, fill=(255, 255, 255), font=title_font)
+    draw.text((text_x, 320 + offset_y), f"{channel}  |  {views}", fill=(255, 255, 255), font=font)
+
     text_width = font.getlength(duration_text)
     right_x = blurred_background.width - text_width - 50  
-    draw.text((right_x, 400), duration_text, (255, 255, 255), font=font)
+    draw.text((right_x, 400 + offset_y), duration_text, (255, 255, 255), font=font)
+    
+    # Move line and dot as well
     line_start_x = blurred_background.width / 2 - int(2 * 37.795)  
-    line_start_y = blurred_background.height / 2 - 20  
+    line_start_y = blurred_background.height / 2 - 20 + offset_y  
     line_end_x = blurred_background.width - 50  
     line_length = line_end_x - line_start_x
     red_end_x = line_start_x + (line_length * 3 / 4)  
     white_start_x = red_end_x  
     draw.line([line_start_x, line_start_y, red_end_x, line_start_y], fill="red", width=10)
     draw.line([white_start_x, line_start_y, line_end_x, line_start_y], fill="white", width=10)
+
     red_dot_radius = 8
     red_dot_x = red_end_x  
     red_dot_y = line_start_y
     draw.ellipse((red_dot_x - red_dot_radius, red_dot_y - red_dot_radius, red_dot_x + red_dot_radius, red_dot_y + red_dot_radius), fill="red")
+    
     hd_position = (60, 140)  
     blurred_background.paste(border_circle, hd_position, border_circle)  
     blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)  
+    
     try:
         os.remove(thumbnail_path)
     except:
         pass
+    
     blurred_background.save(cached_path)
     return cached_path
