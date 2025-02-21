@@ -91,6 +91,11 @@ async def get_thumb(videoid):
     # Apply the mask to the HD thumbnail
     hd_thumbnail.putalpha(circle_mask)
 
+    # **Add black border around the circular image**
+    border_thickness = 10  # Adjust thickness of the border
+    border_circle = Image.new("RGBA", (circle_size + border_thickness * 2, circle_size + border_thickness * 2), (0, 0, 0, 255))
+    border_circle.paste(hd_thumbnail, (border_thickness, border_thickness), hd_thumbnail)
+
     # **Draw Text on Image**
     draw = ImageDraw.Draw(blurred_background)
     font = ImageFont.truetype("GOKUMUSIC/assets/assets/font.ttf", 30)
@@ -109,17 +114,25 @@ async def get_thumb(videoid):
     # **Right side me text ko shift karna**
     draw.text((right_x, 400), duration_text, (255, 255, 255), font=font)
 
-    # **Red Line Drawing with increased width for bolder appearance**
+    # **Red and White Line Drawing with 3/4 Red and 1/4 White**
     line_start_x = blurred_background.width / 2
     line_start_y = blurred_background.height / 2 - 20  # Adjusted to place it above thum.png
     line_end_x = blurred_background.width - 50  # End at the right side
-    line_end_y = line_start_y  # Keep the line horizontal
 
-    draw.line([line_start_x, line_start_y, line_end_x, line_end_y], fill="red", width=6)  # Increased width for boldness
+    # **Calculate 3/4 and 1/4 split of the line length**
+    line_length = line_end_x - line_start_x
+    red_end_x = line_start_x + (line_length * 3 / 4)  # 3/4 red
+    white_start_x = red_end_x  # Start of the white part
+
+    # **Draw Red Part**
+    draw.line([line_start_x, line_start_y, red_end_x, line_start_y], fill="red", width=10)  # Increased width for boldness
+
+    # **Draw White Part**
+    draw.line([white_start_x, line_start_y, line_end_x, line_start_y], fill="white", width=10)  # White part of the line
 
     # **Move HD Circle Slightly Right & Lower**
     hd_position = (60, 140)  # Adjusted Right & Down
-    blurred_background.paste(hd_thumbnail, hd_position, hd_thumbnail)
+    blurred_background.paste(border_circle, hd_position, border_circle)
 
     # **Overlay the thum.png**
     try:
