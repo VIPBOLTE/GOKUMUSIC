@@ -103,7 +103,12 @@ async def get_thumb(videoid):
     draw.text((text_x, 320), f"{channel}  |  {views}", fill=(255, 255, 255), font=font)
 
     # LIVE or Duration Display
-    draw.text((text_x, 400), duration_text, (255, 255, 255), font=font)
+    # Text width calculate karna
+text_width = font.getlength(duration_text)  # Agar PIL version 9.2+ ho to getlength() use karein
+right_x = blurred_background.width - text_width - 50  # Right se 50px ka margin
+
+# Text ko right side me shift karna
+draw.text((right_x, 400), duration_text, (255, 255, 255), font=font)
 
     # **Move HD Circle Slightly Right & Lower**
     hd_position = (60, 140)  # Adjusted Right & Down
