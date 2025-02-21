@@ -91,14 +91,17 @@ async def get_thumb(videoid):
     # Apply the mask to the HD thumbnail
     hd_thumbnail.putalpha(circle_mask)
 
-    # **Add circular black border**
+    # **Black Circular Border around the HD Thumbnail**
     border_thickness = 10  # Adjust thickness of the border
-    border_circle = Image.new("RGBA", (circle_size + border_thickness * 2, circle_size + border_thickness * 2), (0, 0, 0, 255))
-    border_mask = Image.new("L", (circle_size + border_thickness * 2, circle_size + border_thickness * 2), 0)
+    border_size = circle_size + (border_thickness * 2)  # Border size is larger than the circle size
+    border_circle = Image.new("RGBA", (border_size, border_size), (0, 0, 0, 255))
+    
+    # Create circular mask for border
+    border_mask = Image.new("L", (border_size, border_size), 0)
     border_draw = ImageDraw.Draw(border_mask)
     
-    # Draw the circular border
-    border_draw.ellipse((0, 0, circle_size + border_thickness * 2, circle_size + border_thickness * 2), fill=255)
+    # Draw the black circular border
+    border_draw.ellipse((0, 0, border_size, border_size), fill=255)
     border_circle.putalpha(border_mask)
 
     # **Draw Text on Image**
@@ -143,9 +146,10 @@ async def get_thumb(videoid):
     # Draw the red dot
     draw.ellipse((red_dot_x - red_dot_radius, red_dot_y - red_dot_radius, red_dot_x + red_dot_radius, red_dot_y + red_dot_radius), fill="red")
 
-    # **Move HD Circle Slightly Right & Lower**
+    # **Move the Border Circle & Thumbnail**
     hd_position = (60, 140)  # Adjusted Right & Down
-    blurred_background.paste(border_circle, hd_position, border_circle)
+    blurred_background.paste(border_circle, hd_position, border_circle)  # Place the border circle
+    blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)  # Place the HD thumbnail inside the border
 
     # **Overlay the thum.png**
     try:
