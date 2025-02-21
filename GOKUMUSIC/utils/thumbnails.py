@@ -2,7 +2,7 @@ import os
 import re
 import aiofiles
 import aiohttp
-from PIL import Image, ImageDraw, ImageEnhance, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 from unidecode import unidecode
 from youtubesearchpython.__future__ import VideosSearch
 from GOKUMUSIC import app
@@ -78,12 +78,24 @@ async def get_thumb(videoid):
         print(f"Error opening image: {e}")
         return YOUTUBE_IMG_URL
 
-    # **Direct Image (No Blur)** - We won't apply blur anymore
-    background = youtube.convert("RGBA")
-    background = ImageEnhance.Brightness(background).enhance(0.6)
+    # **Blurred Background**
+    blurred_background = youtube.convert("RGBA").filter(ImageFilter.GaussianBlur(20))
+    blurred_background = ImageEnhance.Brightness(blurred_background).enhance(0.6)
     
-    # Draw title and information
-    draw = ImageDraw.Draw(background)
+    # **Creating HD Circular Thumbnail**
+    circle_size = 350  # Adjust size of the circle
+    hd_thumbnail = youtube.resize((circle_size, circle_size), Image.ANTIALIAS)
+    
+    # Create a circular mask for HD image
+    circle_mask = Image.new("L", (circle_size, circle_size), 0)
+    draw_mask = ImageDraw.Draw(circle_mask)
+    draw_mask.ellipse((0, 0, circle_size, circle_size), fill=255)
+    
+    # Apply the mask to the HD thumbnail
+    hd_thumbnail.putalpha(circle_mask)
+
+    # **Draw Text on Image**
+    draw = ImageDraw.Draw(blurred_background)
     font = ImageFont.truetype("GOKUMUSIC/assets/assets/font.ttf", 30)
     title_font = ImageFont.truetype("GOKUMUSIC/assets/assets/font3.ttf", 45)
 
@@ -96,11 +108,15 @@ async def get_thumb(videoid):
     # LIVE or Duration Display
     draw.text((text_x, 400), duration_text, (255, 255, 255), font=font)
 
+    # **Paste HD Circle on Right Side**
+    hd_position = (blurred_background.width - circle_size - 50, 100)  # Adjust position
+    blurred_background.paste(hd_thumbnail, hd_position, hd_thumbnail)
+
     # **Overlay the thum.png**
     try:
         thum_overlay = Image.open("GOKUMUSIC/assets/thum.png").convert("RGBA")
-        thum_overlay = thum_overlay.resize((background.width, background.height), Image.ANTIALIAS)
-        background.paste(thum_overlay, (0, 0), thum_overlay)  # Overlay thum.png
+        thum_overlay = thum_overlay.resize((blurred_background.width, blurred_background.height), Image.ANTIALIAS)
+        blurred_background.paste(thum_overlay, (0, 0), thum_overlay)  # Overlay thum.png
     except Exception as e:
         print(f"Error opening thum.png overlay: {e}")
     
@@ -109,5 +125,5 @@ async def get_thumb(videoid):
         os.remove(thumbnail_path)
     except:
         pass
-    background.save(cached_path)
+    blurred_background.save(cached_path)
     return cached_path
