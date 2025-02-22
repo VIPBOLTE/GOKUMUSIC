@@ -119,9 +119,22 @@ async def get_thumb(videoid):
     # **Right side me text ko shift karna**
     draw.text((right_x, 400), duration_text, (255, 255, 255), font=font)
 
+    # **Move the Border Circle & Thumbnail**
+    hd_position = (60, 140)  # Adjusted Right & Down
+    blurred_background.paste(border_circle, hd_position, border_circle)  # Place the border circle
+    blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)  # Place the HD thumbnail inside the border
+
+    # **Overlay the thum.png**
+    try:
+        thum_overlay = Image.open("GOKUMUSIC/assets/thum.png").convert("RGBA")
+        thum_overlay = thum_overlay.resize((blurred_background.width, blurred_background.height), Image.ANTIALIAS)
+        blurred_background.paste(thum_overlay, (0, 0), thum_overlay)  # Overlay thum.png
+    except Exception as e:
+        print(f"Error opening thum.png overlay: {e}")
+    
     # **Red and White Line Drawing with 3/4 Red and 1/4 White (Above thum.png)**
     line_start_x = blurred_background.width / 2 - int(2 * 37.795)  # Adjusted 2 cm to the left (about 75 pixels)
-    line_start_y = blurred_background.height / 2 - 60  # Adjusted to be above the thum.png overlay
+    line_start_y = blurred_background.height / 2 - 100  # Adjusted to be above the thum.png overlay
     line_end_x = blurred_background.width - 50  # End at the right side
 
     # **Calculate 3/4 and 1/4 split of the line length**
@@ -143,19 +156,6 @@ async def get_thumb(videoid):
     # Draw the red dot
     draw.ellipse((red_dot_x - red_dot_radius, red_dot_y - red_dot_radius, red_dot_x + red_dot_radius, red_dot_y + red_dot_radius), fill="red")
 
-    # **Move the Border Circle & Thumbnail**
-    hd_position = (60, 140)  # Adjusted Right & Down
-    blurred_background.paste(border_circle, hd_position, border_circle)  # Place the border circle
-    blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)  # Place the HD thumbnail inside the border
-
-    # **Overlay the thum.png**
-    try:
-        thum_overlay = Image.open("GOKUMUSIC/assets/thum.png").convert("RGBA")
-        thum_overlay = thum_overlay.resize((blurred_background.width, blurred_background.height), Image.ANTIALIAS)
-        blurred_background.paste(thum_overlay, (0, 0), thum_overlay)  # Overlay thum.png
-    except Exception as e:
-        print(f"Error opening thum.png overlay: {e}")
-    
     # **Save the final image with overlay**
     try:
         os.remove(thumbnail_path)
