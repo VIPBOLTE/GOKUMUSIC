@@ -65,14 +65,32 @@ async def get_thumb(videoid):
         print(f"Error opening image: {e}")
         return YOUTUBE_IMG_URL
 
+    # Open the new background image (thum.png)
+    background_image_path = "GOKUMUSIC/assets/assets/thum.png"
+    try:
+        background = Image.open(background_image_path)
+    except Exception as e:
+        print(f"Error opening background image: {e}")
+        return YOUTUBE_IMG_URL
+
+    # Resize background to fit the thumbnail size
+    background = background.resize(youtube.size)
+
+    # Create a blurred background effect as before
     blurred_background = youtube.convert("RGBA").filter(ImageFilter.GaussianBlur(20))
     blurred_background = ImageEnhance.Brightness(blurred_background).enhance(0.6)
+
+    # Paste the new background on top of the blurred background
+    blurred_background.paste(background, (0, 0), background)
+
     circle_size = 400  
     hd_thumbnail = youtube.resize((circle_size, circle_size), Image.ANTIALIAS)
     circle_mask = Image.new("L", (circle_size, circle_size), 0)
     draw_mask = ImageDraw.Draw(circle_mask)
     draw_mask.ellipse((0, 0, circle_size, circle_size), fill=255)
     hd_thumbnail.putalpha(circle_mask)
+    
+    # Continue with the rest of the code
     border_thickness = 10  
     border_size = circle_size + (border_thickness * 2)  
     border_circle = Image.new("RGBA", (border_size, border_size), (0, 0, 0, 255))
@@ -80,6 +98,7 @@ async def get_thumb(videoid):
     border_draw = ImageDraw.Draw(border_mask)
     border_draw.ellipse((0, 0, border_size, border_size), fill=255)
     border_circle.putalpha(border_mask)
+
     draw = ImageDraw.Draw(blurred_background)
     font = ImageFont.truetype("GOKUMUSIC/assets/assets/font.ttf", 30)
     title_font = ImageFont.truetype("GOKUMUSIC/assets/assets/font3.ttf", 45)
