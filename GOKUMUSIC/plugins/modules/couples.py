@@ -14,8 +14,8 @@ from GOKUMUSIC.mongo.couples_db import _get_image, get_couple
 POLICE = [
     [
         InlineKeyboardButton(
-            text="🍭 ᴄʜᴀᴛ ᴄᴏᴍᴍᴜɴɪᴛʏ",
-            url=f"https://t.me/Anime_Chat_Group_Community",
+            text="𓊈𝗚𝗢𝗞𝗨 𝗕𝗢𝗧 𝗠𝗔𝗞𝗘𝗥𓊉",
+            url=f"https://t.me/goku_groupz",
         ),
     ],
 ]
@@ -76,12 +76,12 @@ async def ctest(_, message):
          try:
             p2 = await app.download_media(photo2.big_file_id, file_name="pfp1.png")
          except Exception:
-            p2 = "GOKUMUSIC/assets/upic.png"
+            p2 = "DAXXMUSIC/assets/upic.png"
             
          img1 = Image.open(f"{p1}")
          img2 = Image.open(f"{p2}")
 
-         img = Image.open("GOKUMUSIC/assets/cppic.png")
+         img = Image.open("DAXXMUSIC/assets/cppic.png")
 
          img1 = img1.resize((437,437))
          img2 = img2.resize((437,437))
