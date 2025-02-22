@@ -4,7 +4,6 @@ import aiofiles
 import aiohttp
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 from youtubesearchpython.__future__ import VideosSearch
-from GOKUMUSIC import app
 from config import YOUTUBE_IMG_URL
 
 async def download_image(url, path):
