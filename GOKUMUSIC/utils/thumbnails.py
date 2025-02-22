@@ -111,7 +111,6 @@ async def get_thumb(videoid):
     title1, title2 = truncate(title)
     draw.text((text_x, 180), title1, fill=(255, 255, 255), font=title_font)
     draw.text((text_x, 230), title2, fill=(255, 255, 255), font=title_font)
-    draw.text((text_x, 320), f"{channel}  |  {views}", fill=(255, 255, 255), font=font)
 
     # **Text Width Calculation for Duration**
     text_width = font.getlength(duration_text)  # PIL 9.2+ me getlength() use karein
@@ -123,7 +122,7 @@ async def get_thumb(videoid):
     # **Red and White Line Drawing with 3/4 Red and 1/4 White**
     
     line_start_x = blurred_background.width / 2 - int(2 * 37.795)  # Adjusted 2 cm to the left (about 75 pixels)
-    line_start_y = blurred_background.height / 2 - 20  # Adjusted to place it above thum.png
+    line_start_y = blurred_background.height / 2 + 20  # Moved line 20px lower
     line_end_x = blurred_background.width - 50  # End at the right side
 
     # **Calculate 3/4 and 1/4 split of the line length**
@@ -157,6 +156,7 @@ async def get_thumb(videoid):
         blurred_background.paste(thum_overlay, (0, 0), thum_overlay)  # Overlay thum.png
     except Exception as e:
         print(f"Error opening thum.png overlay: {e}")
+    
     # **Save the final image with overlay**
     try:
         os.remove(thumbnail_path)
