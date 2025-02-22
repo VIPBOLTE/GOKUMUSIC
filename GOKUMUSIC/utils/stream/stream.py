@@ -17,7 +17,7 @@ from GOKUMUSIC.utils.database import (
 from GOKUMUSIC.utils.exceptions import AssistantErr
 from GOKUMUSIC.utils.inline.play import queue_markup, stream_markup, telegram_markup
 from GOKUMUSIC.utils.inline.playlist import close_markup
-from GOKUMUSIC.utils.pastebin import Champubin
+from GOKUMUSIC.utils.pastebin import GOKUBin
 from GOKUMUSIC.utils.stream.queue import put_queue, put_queue_index
 from GOKUMUSIC.utils.thumbnails import gen_qthumb, get_thumb
 import aiohttp 
