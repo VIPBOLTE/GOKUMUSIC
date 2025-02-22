@@ -3,7 +3,6 @@ import re
 import aiofiles
 import aiohttp
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
-from unidecode import unidecode
 from youtubesearchpython.__future__ import VideosSearch
 from GOKUMUSIC import app
 from config import YOUTUBE_IMG_URL
@@ -13,6 +12,7 @@ async def download_image(url, path):
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as resp:
+                if resp.status == 200:
                     async with aiofiles.open(path, mode="wb") as f:
                         await f.write(await resp.read())
                     return path
@@ -21,6 +21,7 @@ async def download_image(url, path):
     return None  
 
 def truncate(text):
+    """Truncates title text into two lines."""
     words = text.split(" ")
     text1, text2 = "", ""
     for word in words:
@@ -31,7 +32,7 @@ def truncate(text):
     return text1.strip(), text2.strip()
 
 async def get_thumb(videoid):
-    """Fetches video thumbnail and generates an image with overlay."""
+    """Fetches video thumbnail and generates an overlay image."""
     cached_path = f"cache/{videoid}_v4.png"
     if os.path.isfile(cached_path):
         return cached_path
@@ -74,7 +75,7 @@ async def get_thumb(videoid):
     blurred_background = ImageEnhance.Brightness(blurred_background).enhance(0.6)
 
     circle_size = 400
-    hd_thumbnail = youtube.resize((circle_size, circle_size), Image.ANTIALIAS)
+    hd_thumbnail = youtube.resize((circle_size, circle_size), Image.LANCZOS)
 
     circle_mask = Image.new("L", (circle_size, circle_size), 0)
     draw_mask = ImageDraw.Draw(circle_mask)
@@ -90,8 +91,12 @@ async def get_thumb(videoid):
     border_circle.putalpha(border_mask)
 
     draw = ImageDraw.Draw(blurred_background)
-    font = ImageFont.truetype("GOKUMUSIC/assets/assets/font.ttf", 30)
-    title_font = ImageFont.truetype("GOKUMUSIC/assets/assets/font3.ttf", 45)
+    try:
+        font = ImageFont.truetype("GOKUMUSIC/assets/assets/font.ttf", 30)
+        title_font = ImageFont.truetype("GOKUMUSIC/assets/assets/font3.ttf", 45)
+    except Exception as e:
+        print(f"Error loading fonts: {e}")
+        return YOUTUBE_IMG_URL
 
     text_x = 565
     title1, title2 = truncate(title)
@@ -105,17 +110,19 @@ async def get_thumb(videoid):
     hd_position = (60, 140)
     blurred_background.paste(border_circle, hd_position, border_circle)
     blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)
+
     try:
         thum_overlay = Image.open("GOKUMUSIC/assets/thum.png").convert("RGBA")
-        thum_overlay = thum_overlay.resize((blurred_background.width, blurred_background.height), Image.ANTIALIAS)
+        thum_overlay = thum_overlay.resize((blurred_background.width, blurred_background.height), Image.LANCZOS)
         blurred_background.paste(thum_overlay, (0, 0), thum_overlay)
     except Exception as e:
         print(f"Error opening thum.png overlay: {e}")
+
     extra_length = 50
     line_start_x = (blurred_background.width / 2 - 75) - extra_length + 10
     line_end_x = (blurred_background.width - 50) + extra_length + 10
-    
     line_start_y = blurred_background.height / 2 - 40 + 38 + 20
+
     red_end_x = line_start_x + ((line_end_x - line_start_x) * 2 / 4)
     white_start_x = red_end_x
 
@@ -124,12 +131,17 @@ async def get_thumb(videoid):
 
     red_dot_x = red_end_x
     red_dot_y = line_start_y
-        draw.ellipse((red_dot_x - red_dot_radius, red_dot_y - red_dot_radius, red_dot_x + red_dot_radius, red_dot_y + red_dot_radius), fill="red")
-    
+    red_dot_radius = 5  
+    draw.ellipse(
+        (red_dot_x - red_dot_radius, red_dot_y - red_dot_radius, 
+         red_dot_x + red_dot_radius, red_dot_y + red_dot_radius), 
+        fill="red"
+    )
+
     try:
         os.remove(thumbnail_path)
     except:
         pass
-    
+
     blurred_background.save(cached_path)
     return cached_path
