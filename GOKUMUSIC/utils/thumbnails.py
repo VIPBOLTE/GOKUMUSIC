@@ -113,12 +113,12 @@ async def get_thumb(videoid):
         print(f"Error opening thum.png overlay: {e}")
     
     line_start_x = (blurred_background.width / 2 - 65)
-    line_end_x = (blurred_background.width - 120)
+    line_end_x = (blurred_background.width - 140)
     line_start_y = blurred_background.height / 2 - 40 + 38 + 20
-    red_end_x = line_start_x + ((line_end_x - line_start_x) * 2 / 4)
+    red_end_x = line_start_x + ((line_end_x - line_start_x) * 3 / 4)
 
     draw.line([line_start_x, line_start_y, red_end_x, line_start_y], fill="red", width=10)
-    draw.line([red_end_x, line_start_y, line_end_x, line_start_y], fill="white", width=7)
+    draw.line([red_end_x, line_start_y, line_end_x, line_start_y], fill="white", width=5)
     
     red_dot_radius = 15
     draw.ellipse((red_end_x - red_dot_radius, line_start_y - red_dot_radius, red_end_x + red_dot_radius, line_start_y + red_dot_radius), fill="red")
