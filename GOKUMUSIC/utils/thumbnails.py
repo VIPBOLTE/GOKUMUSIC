@@ -116,7 +116,7 @@ async def get_thumb(videoid):
     line_end_x = (blurred_background.width - 50) + extra_length + 10
     
     line_start_y = blurred_background.height / 2 - 40 + 38 + 20
-    red_end_x = line_start_x + ((line_end_x - line_start_x) * 2.5 / 4)
+    red_end_x = line_start_x + ((line_end_x - line_start_x) * 2 / 4)
     white_start_x = red_end_x
 
     draw.line([line_start_x, line_start_y, red_end_x, line_start_y], fill="red", width=10)
