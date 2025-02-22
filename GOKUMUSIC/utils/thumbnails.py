@@ -133,14 +133,6 @@ async def get_thumb(videoid):
     blurred_background.paste(border_circle, hd_position, border_circle)
     blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)
 
-    # Adding overlay
-    try:
-        thum_overlay = Image.open("GOKUMUSIC/assets/thum.png").convert("RGBA")
-        thum_overlay = thum_overlay.resize((blurred_background.width, blurred_background.height), Image.LANCZOS)
-        blurred_background.paste(thum_overlay, (0, 0), thum_overlay)
-    except Exception as e:
-        print(f"Error opening thum.png overlay: {e}")
-
     try:
         os.remove(thumbnail_path)
     except:
