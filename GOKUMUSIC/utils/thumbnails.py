@@ -94,6 +94,7 @@ async def get_thumb(videoid):
     try:
         font = ImageFont.truetype("GOKUMUSIC/assets/assets/font.ttf", 30)
         title_font = ImageFont.truetype("GOKUMUSIC/assets/assets/font3.ttf", 45)
+        info_font = ImageFont.truetype("GOKUMUSIC/assets/assets/font.ttf", 25)
     except Exception as e:
         print(f"Error loading fonts: {e}")
         return YOUTUBE_IMG_URL
@@ -106,6 +107,10 @@ async def get_thumb(videoid):
     text_width = font.getlength(duration_text)
     right_x = blurred_background.width - text_width - 50
     draw.text((right_x, 400), duration_text, (255, 255, 255), font=font)
+
+    # Add channel and views text
+    draw.text((text_x, 300), f"Channel: {channel}", fill=(255, 255, 255), font=info_font)
+    draw.text((text_x, 350), f"Views: {views}", fill=(255, 255, 255), font=info_font)
 
     hd_position = (60, 140)
     blurred_background.paste(border_circle, hd_position, border_circle)
