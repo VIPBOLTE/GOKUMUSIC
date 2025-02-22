@@ -9,10 +9,10 @@ from GOKUMUSIC import app
 from config import YOUTUBE_IMG_URL
 
 async def download_image(url, path):
+    """Downloads an image from the URL and saves it."""
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as resp:
-                if resp.status == 200:
                     async with aiofiles.open(path, mode="wb") as f:
                         await f.write(await resp.read())
                     return path
@@ -31,6 +31,7 @@ def truncate(text):
     return text1.strip(), text2.strip()
 
 async def get_thumb(videoid):
+    """Fetches video thumbnail and generates an image with overlay."""
     cached_path = f"cache/{videoid}_v4.png"
     if os.path.isfile(cached_path):
         return cached_path
@@ -74,12 +75,12 @@ async def get_thumb(videoid):
 
     circle_size = 400
     hd_thumbnail = youtube.resize((circle_size, circle_size), Image.ANTIALIAS)
-    
+
     circle_mask = Image.new("L", (circle_size, circle_size), 0)
     draw_mask = ImageDraw.Draw(circle_mask)
     draw_mask.ellipse((0, 0, circle_size, circle_size), fill=255)
     hd_thumbnail.putalpha(circle_mask)
-    
+
     border_thickness = 10
     border_size = circle_size + (border_thickness * 2)
     border_circle = Image.new("RGBA", (border_size, border_size), (0, 0, 0, 255))
@@ -96,32 +97,35 @@ async def get_thumb(videoid):
     title1, title2 = truncate(title)
     draw.text((text_x, 180), title1, fill=(255, 255, 255), font=title_font)
     draw.text((text_x, 230), title2, fill=(255, 255, 255), font=title_font)
-    
+
     text_width = font.getlength(duration_text)
     right_x = blurred_background.width - text_width - 50
     draw.text((right_x, 400), duration_text, (255, 255, 255), font=font)
-    
+
     hd_position = (60, 140)
     blurred_background.paste(border_circle, hd_position, border_circle)
     blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)
-
     try:
         thum_overlay = Image.open("GOKUMUSIC/assets/thum.png").convert("RGBA")
         thum_overlay = thum_overlay.resize((blurred_background.width, blurred_background.height), Image.ANTIALIAS)
         blurred_background.paste(thum_overlay, (0, 0), thum_overlay)
     except Exception as e:
         print(f"Error opening thum.png overlay: {e}")
+    extra_length = 50  # Increase for more extension
+    line_start_x = (blurred_background.width / 2 - 75) - extra_length
+    line_end_x = (blurred_background.width - 50) + extra_length
     
-    line_start_x = (blurred_background.width / 2 - 65)
-    line_end_x = (blurred_background.width - 140)
     line_start_y = blurred_background.height / 2 - 40 + 38 + 20
-    red_end_x = line_start_x + ((line_end_x - line_start_x) * 3 / 4)
+    red_end_x = line_start_x + ((line_end_x - line_start_x) * 2 / 4)
+    white_start_x = red_end_x
 
     draw.line([line_start_x, line_start_y, red_end_x, line_start_y], fill="red", width=10)
-    draw.line([red_end_x, line_start_y, line_end_x, line_start_y], fill="white", width=5)
-    
+    draw.line([white_start_x, line_start_y, line_end_x, line_start_y], fill="white", width=10)
+
     red_dot_radius = 15
-    draw.ellipse((red_end_x - red_dot_radius, line_start_y - red_dot_radius, red_end_x + red_dot_radius, line_start_y + red_dot_radius), fill="red")
+    red_dot_x = red_end_x
+    red_dot_y = line_start_y
+    draw.ellipse((red_dot_x - red_dot_radius, red_dot_y - red_dot_radius, red_dot_x + red_dot_radius, red_dot_y + red_dot_radius), fill="red")
     
     try:
         os.remove(thumbnail_path)
