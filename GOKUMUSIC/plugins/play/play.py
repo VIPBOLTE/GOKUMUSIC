@@ -12,7 +12,7 @@ from os import getenv
 import config
 from config import BANNED_USERS, LOGGER_ID, OWNER_ID, lyrical
 from GOKUMUSIC import LOGGER, Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app, EMOJIS
-from GOKUMUSIC.core.call import GOKU as Champu
+from GOKUMUSIC.core.call import GOKU
 from GOKUMUSIC.utils import seconds_to_min, time_to_seconds
 from GOKUMUSIC.utils.channelplay import get_channeplayCB
 from GOKUMUSIC.utils.database import add_served_chat, get_assistant, is_video_allowed
@@ -347,7 +347,7 @@ async def play_commnd(
                     "ᴏᴏᴘs ɪ ᴅᴏɴ'ᴛ Tʜɪɴᴋ ᴛʜᴀᴛ ɪᴛ ɪs ᴀ sᴛʀᴇᴀᴍᴀʙʟᴇ ᴜʀʟ"
                 )
             try:
-                await Champu.stream_call(url)
+                await GOKU.stream_call(url)
             except NoActiveGroupCall:
                 await mystic.edit_text(
                     "ᴛʜᴇʀᴇ's ᴀɴ ᴇʀʀᴏʀ ɪɴ ᴛʜᴇ ʙᴏᴛ, ᴩʟᴇᴀsᴇ ʀᴇᴩᴏʀᴛ ɪᴛ ᴛᴏ sᴜᴩᴩᴏʀᴛ ᴄʜᴀᴛ ᴀs sᴏᴏɴ ᴀs ᴩᴏssɪʙʟᴇ."
