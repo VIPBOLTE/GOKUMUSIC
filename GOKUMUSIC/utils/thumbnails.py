@@ -120,11 +120,11 @@ async def get_thumb(videoid):
     white_start_x = red_end_x
 
     draw.line([line_start_x, line_start_y, red_end_x, line_start_y], fill="red", width=10)
-    draw.line([white_start_x, line_start_y, line_end_x - 5, line_start_y], fill="white", width=10)
+    draw.line([white_start_x, line_start_y, line_end_x, line_start_y], fill="white", width=10)
 
     red_dot_x = red_end_x
     red_dot_y = line_start_y
-    draw.ellipse((red_dot_x - 15, red_dot_y - 15, red_dot_x + 15, red_dot_y + 15), fill="red")
+        draw.ellipse((red_dot_x - red_dot_radius, red_dot_y - red_dot_radius, red_dot_x + red_dot_radius, red_dot_y + red_dot_radius), fill="red")
     
     try:
         os.remove(thumbnail_path)
