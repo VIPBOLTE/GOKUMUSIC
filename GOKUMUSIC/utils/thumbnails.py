@@ -9,7 +9,6 @@ from GOKUMUSIC import app
 from config import YOUTUBE_IMG_URL
 
 async def download_image(url, path):
-    """Downloads an image from the URL and saves it."""
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as resp:
@@ -32,7 +31,6 @@ def truncate(text):
     return text1.strip(), text2.strip()
 
 async def get_thumb(videoid):
-    """Fetches video thumbnail and generates an image with overlay."""
     cached_path = f"cache/{videoid}_v4.png"
     if os.path.isfile(cached_path):
         return cached_path
@@ -107,19 +105,19 @@ async def get_thumb(videoid):
     blurred_background.paste(border_circle, hd_position, border_circle)
     blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)
 
-        try:
+    try:
         thum_overlay = Image.open("GOKUMUSIC/assets/thum.png").convert("RGBA")
         thum_overlay = thum_overlay.resize((blurred_background.width, blurred_background.height), Image.ANTIALIAS)
         blurred_background.paste(thum_overlay, (0, 0), thum_overlay)
     except Exception as e:
         print(f"Error opening thum.png overlay: {e}")
     
-    line_start_x = blurred_background.width / 2 - 75
+    extra_length = 50  # Increase for more extension
+    line_start_x = (blurred_background.width / 2 - 75) - extra_length
+    line_end_x = (blurred_background.width - 50) + extra_length
+    
     line_start_y = blurred_background.height / 2 - 40 + 38 + 20
-    line_end_x = blurred_background.width - 50
-
-    line_length = line_end_x - line_start_x
-    red_end_x = line_start_x + (line_length * 2 / 4)
+    red_end_x = line_start_x + ((line_end_x - line_start_x) * 2 / 4)
     white_start_x = red_end_x
 
     draw.line([line_start_x, line_start_y, red_end_x, line_start_y], fill="red", width=10)
@@ -129,9 +127,11 @@ async def get_thumb(videoid):
     red_dot_x = red_end_x
     red_dot_y = line_start_y
     draw.ellipse((red_dot_x - red_dot_radius, red_dot_y - red_dot_radius, red_dot_x + red_dot_radius, red_dot_y + red_dot_radius), fill="red")
+    
     try:
         os.remove(thumbnail_path)
     except:
         pass
+    
     blurred_background.save(cached_path)
     return cached_path
