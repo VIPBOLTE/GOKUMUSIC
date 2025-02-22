@@ -57,16 +57,12 @@ async def get_thumb(videoid):
     views = result.get("viewCount", {}).get("short", "Unknown Views")
     channel = result.get("channel", {}).get("name", "Unknown Channel")
 
-    # LIVE Handling
     is_live = duration is None
     duration_text = "🔴 LIVE" if is_live else duration
 
     thumbnail_path = f"cache/thumb{videoid}.png"
-
-    # **Thumbnail Download with Fallback**
     downloaded_path = await download_image(thumbnail_url, thumbnail_path)
     if not downloaded_path:  
-        print("Thumbnail fetch failed! Using default YouTube image.")
         downloaded_path = await download_image(YOUTUBE_IMG_URL, thumbnail_path)
 
     try:
@@ -75,34 +71,25 @@ async def get_thumb(videoid):
         print(f"Error opening image: {e}")
         return YOUTUBE_IMG_URL
 
-    # **Blurred Background**
     blurred_background = youtube.convert("RGBA").filter(ImageFilter.GaussianBlur(20))
     blurred_background = ImageEnhance.Brightness(blurred_background).enhance(0.6)
 
-    # **Creating HD Circular Thumbnail**
-    circle_size = 400  # Adjust size of the circle
+    circle_size = 400
     hd_thumbnail = youtube.resize((circle_size, circle_size), Image.ANTIALIAS)
-
-    # Create a circular mask for HD image
+    
     circle_mask = Image.new("L", (circle_size, circle_size), 0)
     draw_mask = ImageDraw.Draw(circle_mask)
     draw_mask.ellipse((0, 0, circle_size, circle_size), fill=255)
     hd_thumbnail.putalpha(circle_mask)
-
-    # **Black Circular Border around the HD Thumbnail**
-    border_thickness = 10  # Adjust thickness of the border
-    border_size = circle_size + (border_thickness * 2)  # Border size is larger than the circle size
+    
+    border_thickness = 10
+    border_size = circle_size + (border_thickness * 2)
     border_circle = Image.new("RGBA", (border_size, border_size), (0, 0, 0, 255))
-
-    # Create circular mask for border
     border_mask = Image.new("L", (border_size, border_size), 0)
     border_draw = ImageDraw.Draw(border_mask)
-
-    # Draw the black circular border
     border_draw.ellipse((0, 0, border_size, border_size), fill=255)
     border_circle.putalpha(border_mask)
 
-    # **Draw Text on Image**
     draw = ImageDraw.Draw(blurred_background)
     font = ImageFont.truetype("GOKUMUSIC/assets/assets/font.ttf", 30)
     title_font = ImageFont.truetype("GOKUMUSIC/assets/assets/font3.ttf", 45)
@@ -111,52 +98,38 @@ async def get_thumb(videoid):
     title1, title2 = truncate(title)
     draw.text((text_x, 180), title1, fill=(255, 255, 255), font=title_font)
     draw.text((text_x, 230), title2, fill=(255, 255, 255), font=title_font)
-
-    # **Text Width Calculation for Duration**
-    text_width = font.getlength(duration_text)  # PIL 9.2+ me getlength() use karein
-    right_x = blurred_background.width - text_width - 50  # Right side se 50px ka margin
-
-    # **Right side me text ko shift karna**
+    
+    text_width = font.getlength(duration_text)
+    right_x = blurred_background.width - text_width - 50
     draw.text((right_x, 400), duration_text, (255, 255, 255), font=font)
+    
+    hd_position = (60, 140)
+    blurred_background.paste(border_circle, hd_position, border_circle)
+    blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)
 
-    # **Move the Border Circle & Thumbnail**
-    hd_position = (60, 140)  # Adjusted Right & Down
-    blurred_background.paste(border_circle, hd_position, border_circle)  # Place the border circle
-    blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)  # Place the HD thumbnail inside the border
-
-    # **Overlay the thum.png**
     try:
         thum_overlay = Image.open("GOKUMUSIC/assets/thum.png").convert("RGBA")
         thum_overlay = thum_overlay.resize((blurred_background.width, blurred_background.height), Image.ANTIALIAS)
-        blurred_background.paste(thum_overlay, (0, 0), thum_overlay)  # Overlay thum.png
+        blurred_background.paste(thum_overlay, (0, 0), thum_overlay)
     except Exception as e:
         print(f"Error opening thum.png overlay: {e}")
     
-    # **Red and White Line Drawing with 3/4 Red and 1/4 White (Above thum.png)**
-    line_start_x = blurred_background.width / 2 - int(2 * 37.795)  # Adjusted 2 cm to the left (about 75 pixels)
-    line_start_y = blurred_background.height / 2 - 40 + int(37.795) + int(19.999) # Added 1 cm (37.795 pixels)
-    line_end_x = blurred_background.width - 50  # End at the right side
+    line_start_x = blurred_background.width / 2 - 75
+    line_start_y = blurred_background.height / 2 - 40 + 38 + 20
+    line_end_x = blurred_background.width - 50
 
-    # **Calculate 3/4 and 1/4 split of the line length**
     line_length = line_end_x - line_start_x
-    red_end_x = line_start_x + (line_length * 2 / 4)  # 3/4 red
-    white_start_x = red_end_x  # Start of the white part
+    red_end_x = line_start_x + (line_length * 2 / 4)
+    white_start_x = red_end_x
 
-    # **Draw Red Part**
-    draw.line([line_start_x, line_start_y, red_end_x, line_start_y], fill="red", width=10)  # Increased width for boldness
-
-    # **Draw White Part**
-    draw.line([white_start_x, line_start_y, line_end_x, line_start_y], fill="white", width=10)  # White part of the line
-
-    # **Red Dot at the junction**
-    red_dot_radius = 8
-    red_dot_x = red_end_x  # Red dot at the end of the red part
+    draw.line([line_start_x, line_start_y, red_end_x, line_start_y], fill="red", width=10)
+    draw.line([white_start_x, line_start_y, line_end_x, line_start_y], fill="white", width=10)
+    
+    red_dot_radius = 15
+    red_dot_x = red_end_x
     red_dot_y = line_start_y
-
-    # Draw the red dot
     draw.ellipse((red_dot_x - red_dot_radius, red_dot_y - red_dot_radius, red_dot_x + red_dot_radius, red_dot_y + red_dot_radius), fill="red")
-
-    # **Save the final image with overlay**
+    
     try:
         os.remove(thumbnail_path)
     except:
