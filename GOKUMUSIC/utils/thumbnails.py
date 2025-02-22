@@ -112,7 +112,7 @@ async def get_thumb(videoid):
     draw.ellipse((red_dot_x - red_dot_radius, red_dot_y - red_dot_radius, red_dot_x + red_dot_radius, red_dot_y + red_dot_radius), fill="red")
     
     # Load play icon image
-    play_icon = Image.open("GOKUMUSIC/assets/assets/play_icon.png")
+    play_icon = Image.open("GOKUMUSIC/assets/assets/play_icons.png")
     play_icon_size = (40, 40)  # Resize the play icon if necessary
     play_icon = play_icon.resize(play_icon_size)
 
