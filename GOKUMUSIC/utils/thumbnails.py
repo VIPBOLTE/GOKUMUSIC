@@ -134,7 +134,7 @@ async def get_thumb(videoid):
     
     # **Red and White Line Drawing with 3/4 Red and 1/4 White (Above thum.png)**
     line_start_x = blurred_background.width / 2 - int(2 * 37.795)  # Adjusted 2 cm to the left (about 75 pixels)
-    line_start_y = blurred_background.height / 2 - 40 + int(37.795) + int(19.227) # Added 1 cm (37.795 pixels)
+    line_start_y = blurred_background.height / 2 - 40 + int(37.795) + int(19.387) # Added 1 cm (37.795 pixels)
     line_end_x = blurred_background.width - 50  # End at the right side
 
     # **Calculate 3/4 and 1/4 split of the line length**
@@ -143,10 +143,10 @@ async def get_thumb(videoid):
     white_start_x = red_end_x  # Start of the white part
 
     # **Draw Red Part**
-    draw.line([line_start_x, line_start_y, red_end_x, line_start_y], fill="red", width=15)  # Increased width for boldness
+    draw.line([line_start_x, line_start_y, red_end_x, line_start_y], fill="red", width=10)  # Increased width for boldness
 
     # **Draw White Part**
-    draw.line([white_start_x, line_start_y, line_end_x, line_start_y], fill="white", width=15)  # White part of the line
+    draw.line([white_start_x, line_start_y, line_end_x, line_start_y], fill="white", width=10)  # White part of the line
 
     # **Red Dot at the junction**
     red_dot_radius = 8
