@@ -81,9 +81,10 @@ async def get_thumb(videoid):
     draw_mask.ellipse((0, 0, circle_size, circle_size), fill=255)
     hd_thumbnail.putalpha(circle_mask)
 
+    # Border logic
     border_thickness = 10
     border_size = circle_size + (border_thickness * 2)
-    border_circle = Image.new("RGBA", (border_size, border_size), (0, 0, 0, 255))
+    border_circle = Image.new("RGBA", (border_size, border_size), (255, 255, 255, 255))  # White border
     border_mask = Image.new("L", (border_size, border_size), 0)
     border_draw = ImageDraw.Draw(border_mask)
     border_draw.ellipse((0, 0, border_size, border_size), fill=255)
