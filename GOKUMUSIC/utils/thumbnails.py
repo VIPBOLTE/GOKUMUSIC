@@ -134,12 +134,12 @@ async def get_thumb(videoid):
     
     # **Red and White Line Drawing with 3/4 Red and 1/4 White (Above thum.png)**
     line_start_x = blurred_background.width / 2 - int(2 * 37.795)  # Adjusted 2 cm to the left (about 75 pixels)
-    line_start_y = blurred_background.height / 2 - 40 + int(37.795) + int(19.887) # Added 1 cm (37.795 pixels)
+    line_start_y = blurred_background.height / 2 - 40 + int(37.795) + int(19.999) # Added 1 cm (37.795 pixels)
     line_end_x = blurred_background.width - 50  # End at the right side
 
     # **Calculate 3/4 and 1/4 split of the line length**
     line_length = line_end_x - line_start_x
-    red_end_x = line_start_x + (line_length * 3 / 4)  # 3/4 red
+    red_end_x = line_start_x + (line_length * 2 / 4)  # 3/4 red
     white_start_x = red_end_x  # Start of the white part
 
     # **Draw Red Part**
