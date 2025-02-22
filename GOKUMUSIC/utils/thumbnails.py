@@ -13,9 +13,9 @@ async def download_image(url, path):
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as resp:
-                    async with aiofiles.open(path, mode="wb") as f:
-                        await f.write(await resp.read())
-                    return path
+                async with aiofiles.open(path, mode="wb") as f:
+                    await f.write(await resp.read())
+                return path
     except Exception as e:
         print(f"Error downloading image: {e}")
     return None  
@@ -105,15 +105,11 @@ async def get_thumb(videoid):
     hd_position = (60, 140)
     blurred_background.paste(border_circle, hd_position, border_circle)
     blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)
-    try:
-        thum_overlay = Image.open("GOKUMUSIC/assets/thum.png").convert("RGBA")
-        thum_overlay = thum_overlay.resize((blurred_background.width, blurred_background.height), Image.ANTIALIAS)
-        blurred_background.paste(thum_overlay, (0, 0), thum_overlay)
-    except Exception as e:
-        print(f"Error opening thum.png overlay: {e}")
-    extra_length = 50  # Increase for more extension
-    line_start_x = (blurred_background.width / 2 - 75) - extra_length
-    line_end_x = (blurred_background.width - 50) + extra_length
+    
+    extra_length = 50  
+    offset = 38  # 1 cm in pixels
+    line_start_x = (blurred_background.width / 2 - 75) - extra_length + offset
+    line_end_x = (blurred_background.width - 50) + extra_length + offset
     
     line_start_y = blurred_background.height / 2 - 40 + 38 + 20
     red_end_x = line_start_x + ((line_end_x - line_start_x) * 2 / 4)
