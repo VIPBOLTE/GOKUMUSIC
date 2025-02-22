@@ -107,28 +107,9 @@ async def get_thumb(videoid):
     blurred_background.paste(border_circle, hd_position, border_circle)
     blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)
 
-    try:
-        thum_overlay = Image.open("GOKUMUSIC/assets/thum.png").convert("RGBA")
-        thum_overlay = thum_overlay.resize((blurred_background.width, blurred_background.height), Image.ANTIALIAS)
-        blurred_background.paste(thum_overlay, (0, 0), thum_overlay)
-    except Exception as e:
-        print(f"Error opening thum.png overlay: {e}")
-    
-    line_start_x = blurred_background.width / 2 - 75
-    line_start_y = blurred_background.height / 2 - 40 + 38 + 20
-    line_end_x = blurred_background.width - 50
-
-    line_length = line_end_x - line_start_x
-    red_end_x = line_start_x + (line_length * 2 / 4)
-    white_start_x = red_end_x
-
-    draw.line([line_start_x, line_start_y, red_end_x, line_start_y], fill="red", width=10)
-    draw.line([white_start_x, line_start_y, line_end_x, line_start_y], fill="white", width=10)
-    
-    red_dot_radius = 15
-    red_dot_x = red_end_x
-    red_dot_y = line_start_y
-    draw.ellipse((red_dot_x - red_dot_radius, red_dot_y - red_dot_radius, red_dot_x + red_dot_radius, red_dot_y + red_dot_radius), fill="red")
+    draw.line([(50, line_start_y), (line_start_x - 38, line_start_y)], fill="red", width=10)
+    draw.line([(line_start_x, line_start_y), (red_end_x + 38, line_start_y)], fill="red", width=10)
+    draw.line([(white_start_x + 38, line_start_y), (line_end_x + 38, line_start_y)], fill="white", width=10)
     
     try:
         os.remove(thumbnail_path)
