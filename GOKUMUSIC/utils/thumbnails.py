@@ -111,6 +111,17 @@ async def get_thumb(videoid):
     red_dot_y = line_start_y
     draw.ellipse((red_dot_x - red_dot_radius, red_dot_y - red_dot_radius, red_dot_x + red_dot_radius, red_dot_y + red_dot_radius), fill="red")
     
+    # Load play icon image
+    play_icon = Image.open("GOKUMUSIC/assets/assets/play_icon.png")
+    play_icon_size = (40, 40)  # Resize the play icon if necessary
+    play_icon = play_icon.resize(play_icon_size)
+
+    # Position of play icon (just below the red-white line)
+    play_icon_position = (line_start_x, line_start_y + 20)
+    
+    # Paste play icon to the image
+    blurred_background.paste(play_icon, play_icon_position, play_icon)
+    
     hd_position = (60, 140)  
     blurred_background.paste(border_circle, hd_position, border_circle)  
     blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)  
