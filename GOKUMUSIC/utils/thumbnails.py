@@ -108,9 +108,7 @@ async def get_thumb(videoid):
     right_x = blurred_background.width - text_width - 50
     draw.text((right_x, 400), duration_text, (255, 255, 255), font=font)
 
-    # Adjusted position of views text (moved up to prevent cutting)
-    draw.text((text_x, 280), f"Channel: {channel}", fill=(255, 255, 255), font=info_font)
-    draw.text((text_x, 320), f"Views: {views}", fill=(255, 255, 255), font=info_font)
+    draw.text((text_x, 280), f"{channel} | {views}", fill=(255, 255, 255), font=info_font)
 
     hd_position = (60, 140)
     blurred_background.paste(border_circle, hd_position, border_circle)
@@ -122,26 +120,6 @@ async def get_thumb(videoid):
         blurred_background.paste(thum_overlay, (0, 0), thum_overlay)
     except Exception as e:
         print(f"Error opening thum.png overlay: {e}")
-
-    extra_length = 50
-    line_start_x = (blurred_background.width / 2 - 75) - extra_length + 10
-    line_end_x = (blurred_background.width - 50) + extra_length + 10
-    line_start_y = blurred_background.height / 2 - 40 + 38 + 20
-
-    red_end_x = line_start_x + ((line_end_x - line_start_x) * 2 / 4)
-    white_start_x = red_end_x
-
-    draw.line([line_start_x, line_start_y, red_end_x, line_start_y], fill="red", width=10)
-    draw.line([white_start_x, line_start_y, line_end_x, line_start_y], fill="white", width=10)
-
-    red_dot_x = red_end_x
-    red_dot_y = line_start_y
-    red_dot_radius = 5  
-    draw.ellipse(
-        (red_dot_x - red_dot_radius, red_dot_y - red_dot_radius, 
-         red_dot_x + red_dot_radius, red_dot_y + red_dot_radius), 
-        fill="red"
-    )
 
     try:
         os.remove(thumbnail_path)
