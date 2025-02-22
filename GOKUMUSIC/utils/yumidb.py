@@ -1,12 +1,9 @@
-
 from functools import wraps 
-
 from pyrogram import Client
 from pyrogram.types import Message
 from pyrogram.enums import ChatMemberStatus, ChatType
 
 from GOKUMUSIC import app
-
 from config import OWNER_ID, BOT_USERNAME
 from GOKUMUSIC.music import SUDOERS
 
