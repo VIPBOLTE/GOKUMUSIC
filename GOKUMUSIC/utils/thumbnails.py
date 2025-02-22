@@ -108,9 +108,9 @@ async def get_thumb(videoid):
     right_x = blurred_background.width - text_width - 50
     draw.text((right_x, 400), duration_text, (255, 255, 255), font=font)
 
-    # Add channel and views text
-    draw.text((text_x, 300), f"Channel: {channel}", fill=(255, 255, 255), font=info_font)
-    draw.text((text_x, 350), f"Views: {views}", fill=(255, 255, 255), font=info_font)
+    # Adjusted position of views text (moved up to prevent cutting)
+    draw.text((text_x, 280), f"Channel: {channel}", fill=(255, 255, 255), font=info_font)
+    draw.text((text_x, 320), f"Views: {views}", fill=(255, 255, 255), font=info_font)
 
     hd_position = (60, 140)
     blurred_background.paste(border_circle, hd_position, border_circle)
