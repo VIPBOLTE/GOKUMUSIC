@@ -5,7 +5,7 @@ from config import SUPPORT_CHAT
 from GOKUMUSIC import app
 
 
-def start_pannel(_):
+def start_panel(_):
     buttons = [
         [
             InlineKeyboardButton(
