@@ -73,24 +73,26 @@ async def get_thumb(videoid):
     blurred_background = youtube.convert("RGBA").filter(ImageFilter.GaussianBlur(20))
     blurred_background = ImageEnhance.Brightness(blurred_background).enhance(0.6)
 
+    # Create circular HD thumbnail with a thick border
     circle_size = 400
     hd_thumbnail = youtube.resize((circle_size, circle_size), Image.LANCZOS)
 
+    # Create circular mask
     circle_mask = Image.new("L", (circle_size, circle_size), 0)
     draw_mask = ImageDraw.Draw(circle_mask)
     draw_mask.ellipse((0, 0, circle_size, circle_size), fill=255)
     hd_thumbnail.putalpha(circle_mask)
 
-    # Increase border thickness
-    border_thickness = 20  # Thicker border
+    # Create border
+    border_thickness = 20
     border_size = circle_size + (border_thickness * 2)
-    border_circle = Image.new("RGBA", (border_size, border_size), (255, 255, 255, 255))  # White border
+    border_circle = Image.new("RGBA", (border_size, border_size), (255, 255, 255, 255))
     border_mask = Image.new("L", (border_size, border_size), 0)
     border_draw = ImageDraw.Draw(border_mask)
     border_draw.ellipse((0, 0, border_size, border_size), fill=255)
     border_circle.putalpha(border_mask)
 
-    # Drawing Logic from your previous code
+    # Drawing Logic
     draw = ImageDraw.Draw(blurred_background)
 
     try:
@@ -141,4 +143,3 @@ async def get_thumb(videoid):
 
     blurred_background.save(cached_path)
     return cached_path
-
