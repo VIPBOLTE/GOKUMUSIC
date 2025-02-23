@@ -194,3 +194,9 @@ if SUPPORT_CHAT:
 # ---------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------
+# Time sleep duration For Youtube Downloader
+YOUTUBE_DOWNLOAD_EDIT_SLEEP = int(getenv("YOUTUBE_EDIT_SLEEP", 3))
+
+# Time sleep duration For Telegram Downloader
+TELEGRAM_DOWNLOAD_EDIT_SLEEP = int(getenv("TELEGRAM_EDIT_SLEEP", 5))
+
