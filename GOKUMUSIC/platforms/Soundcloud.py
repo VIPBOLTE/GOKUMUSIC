@@ -1,9 +1,6 @@
 from os import path
-
 from yt_dlp import YoutubeDL
-
 from GOKUMUSIC.utils.formatters import seconds_to_min
-
 
 class SoundAPI:
     def __init__(self):
