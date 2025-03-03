@@ -76,7 +76,7 @@ async def ctest(_, message):
          try:
             p2 = await app.download_media(photo2.big_file_id, file_name="pfp1.png")
          except Exception:
-            p2 = "DAXXMUSIC/assets/upic.png"
+            p2 = "GOKUMUSIC/assets/upic.png"
             
          img1 = Image.open(f"{p1}")
          img2 = Image.open(f"{p2}")
@@ -154,14 +154,4 @@ __mod__ = "COUPLES"
 __help__ = """
 **» /couples** - Get Todays Couples Of The Group In Interactive View
 """
-
-
-
-
-
-    
-
-
-
-
-    
+   
