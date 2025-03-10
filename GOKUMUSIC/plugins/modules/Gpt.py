@@ -5,10 +5,10 @@ from pyrogram.enums import ChatAction, ParseMode
 from GOKUMUSIC import app
 
 # Replace this with your OpenAI API key
-openai.api_key = "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" # Replace with your actual OpenAI API key
+openai.api_key = "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" # Replace with your actual OpenAI API key
 
 # Replace this with your bot's username
-BOT_USERNAME = "UtopiaMaxBot"
+BOT_USERNAME = self.me
 
 @app.on_message(filters.command(["chatgpt", "ai", "ask", "gpt", "solve"], prefixes=["+", ".", "/", "-", "", "$", "#", "&"]))
 async def chat_gpt(bot, message):
