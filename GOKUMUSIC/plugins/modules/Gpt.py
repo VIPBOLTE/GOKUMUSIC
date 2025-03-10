@@ -8,7 +8,7 @@ from GOKUMUSIC import app
 openai.api_key = "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" # Replace with your actual OpenAI API key
 
 # Replace this with your bot's username
-BOT_USERNAME = self.me
+BOT_USERNAME = app.me.username if app.me else "MyBot"
 
 @app.on_message(filters.command(["chatgpt", "ai", "ask", "gpt", "solve"], prefixes=["+", ".", "/", "-", "", "$", "#", "&"]))
 async def chat_gpt(bot, message):
