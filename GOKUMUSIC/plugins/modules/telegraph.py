@@ -1,48 +1,96 @@
-# <======================================= IMPORTS ==================================================>
-from telegraph import upload_file
+import requests
+import os
 from pyrogram import filters
 from GOKUMUSIC import app
-from pyrogram.types import Message
-import os
 
-# <======================================= Helper Function ==========================================>
-def upload_to_platform(message: Message, base_url: str):
-    reply = message.reply_to_message
-    if not reply or not reply.media:
-        return message.reply("⚠️ Please reply to a media file (photo/video/document).")
+# Function to upload a file to envs.sh
+def upload_to_envs(file_path=None, file_url=None, expires=None, secret=None):
+    url = "https://envs.sh"
+    files = {}
+    data = {}
+    
+    # If uploading a local file
+    if file_path:
+        files = {'file': open(file_path, 'rb')}
+    
+    # If uploading a remote URL
+    elif file_url:
+        data = {'url': file_url}
+    
+    # Add secret and expiration if provided
+    if secret:
+        data['secret'] = secret
+    if expires:
+        data['expires'] = expires  # Expiration time in hours
+    
+    # Make the request
+    response = requests.post(url, files=files, data=data)
+    
+    # Close file after the upload
+    if file_path:
+        files['file'].close()
+    
+    if response.status_code == 200:
+        print("File uploaded successfully to envs.sh!")
+        print("File URL:", response.text.strip())
+        return response.text.strip()
+    else:
+        print("Failed to upload file to envs.sh.")
+        print("Status Code:", response.status_code)
+        print("Response:", response.text)
+        return None
 
-    status = message.reply("🔄 Uploading your file...")
-
-    try:
-        path = reply.download()
-        if not path:
-            return status.edit("❌ Failed to download the file.")
-
-        # Check file size limit (Telegraph supports max ~5MB)
-        if os.path.getsize(path) > 5242880:  # 5MB limit
-            os.remove(path)
-            return status.edit("⚠️ File too large! Telegraph only supports up to 5MB.")
-
-        file_link = upload_file(path)  # Upload the file
-        os.remove(path)  # Delete local file after upload
-
-        # 🛠️ FIX: Check if file_link is a list or a string
-        if isinstance(file_link, list) and len(file_link) > 0:
-            url = f"{base_url}/{file_link[0]}"
-        elif isinstance(file_link, str) and file_link.startswith("/"):  # Single URL case
-            url = f"{base_url}/{file_link}"
+# Function to upload a file to Catbox
+def upload_to_catbox(file_path):
+    url = "https://catbox.moe/user/api.php"
+    with open(file_path, "rb") as file:
+        response = requests.post(
+            url,
+            data={"reqtype": "fileupload"},
+            files={"fileToUpload": file}
+        )
+        if response.status_code == 200 and response.text.startswith("https"):
+            print("Image uploaded successfully to Catbox!")
+            return response.text
         else:
-            return status.edit("❌ Unexpected error: No link returned.")
+            raise Exception(f"Error uploading to Catbox: {response.text}")
 
-        status.edit(f"✅ Link generated successfully:\n🔗 `{url}`")
-    except Exception as e:
-        status.edit(f"❌ Failed to generate link.\nError: `{str(e)}`")
-
-# <======================================= Commands ================================================>
-@app.on_message(filters.command(["tele", "tgm", "telegraph"]))
-def upload_to_telegraph(_, message: Message):
-    upload_to_platform(message, "https://telegra.ph")
-
-@app.on_message(filters.command(["graph", "grf"]))
-def upload_to_graph(_, message: Message):
-    upload_to_platform(message, "https://graph.org")
+# Pyrogram handler for the /tgm command
+@app.on_message(filters.command("tgm") & filters.reply)
+async def send_catbox_and_envs_link(client, message):
+    reply = message.reply_to_message
+    if reply and (reply.photo or reply.document):  # Check if the replied message contains a photo or document
+        try:
+            # Send processing message
+            processing_message = await message.reply("Processing... Please wait.")
+            
+            # Download the replied media
+            path = await reply.download()
+            
+            # Check if the file is a PNG, JPG, JPEG, GIF, PDF, or DOCX
+            if path.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.pdf', '.docx')):
+                # Upload the file to Catbox
+                catbox_url = upload_to_catbox(path)
+                
+                # Upload the file to envs.sh using the local file path
+                envs_url = upload_to_envs(file_path=path, expires=24, secret="mysecret123")  # Example with expiry and secret
+                
+                # Send both links to the user
+                await message.reply(
+                    text=f"Yᴏᴜʀ ʟɪɴᴋs sᴜᴄᴄᴇssғᴜʟ Gᴇɴ:\n\n"
+                         f"1. Catbox Link: \n{catbox_url if catbox_url else 'Failed to upload to catbox_url'}\n\n"
+                         f"2. Env sh Link: {envs_url if envs_url else 'Failed to upload to envs sh'}"
+                )
+                
+                # Delete the processing message after the links are sent
+                await processing_message.delete()
+            else:
+                await message.reply("Please reply to a valid image (PNG, JPG, etc.) or document (PDF, DOCX).")
+        except Exception as e:
+            await message.reply(f"Failed to upload file. Error: {str(e)}")
+        finally:
+            # Ensure cleanup of the downloaded file
+            if os.path.exists(path):
+                os.remove(path)
+    else:
+        await message.reply("Please reply to a photo or a document.")
