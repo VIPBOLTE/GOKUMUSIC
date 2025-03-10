@@ -26,10 +26,10 @@ def upload_to_platform(message: Message, base_url: str):
         file_link = upload_file(path)  # Upload the file
         os.remove(path)  # Delete local file after upload
 
-        # Handling the response from upload_file()
-        if isinstance(file_link, list) and file_link:
+        # 🛠️ FIX: Check if file_link is a list or a string
+        if isinstance(file_link, list) and len(file_link) > 0:
             url = f"{base_url}/{file_link[0]}"
-        elif isinstance(file_link, str):  # In case of unexpected string return
+        elif isinstance(file_link, str) and file_link.startswith("/"):  # Single URL case
             url = f"{base_url}/{file_link}"
         else:
             return status.edit("❌ Unexpected error: No link returned.")
