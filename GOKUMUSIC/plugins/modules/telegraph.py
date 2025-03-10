@@ -55,6 +55,17 @@ def upload_to_catbox(file_path):
         else:
             raise Exception(f"Error uploading to Catbox: {response.text}")
 
+# Function to upload a file to 0x0
+def upload_to_0x0(file_path):
+    url = "https://0x0.st"
+    with open(file_path, "rb") as file:
+        response = requests.post(url, files={"file": file})
+        if response.status_code == 200:
+            print("File uploaded successfully to 0x0!")
+            return response.text.strip()
+        else:
+            raise Exception(f"Error uploading to 0x0: {response.text}")
+
 # Pyrogram handler for the /tgm command
 @app.on_message(filters.command("tgm") & filters.reply)
 async def send_catbox_and_envs_link(client, message):
@@ -69,17 +80,33 @@ async def send_catbox_and_envs_link(client, message):
             
             # Check if the file is a PNG, JPG, JPEG, GIF, PDF, or DOCX
             if path.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.pdf', '.docx')):
+                # Initialize success flags for each service
+                catbox_url = envs_url = x0_url = None
+                
                 # Upload the file to Catbox
-                catbox_url = upload_to_catbox(path)
+                try:
+                    catbox_url = upload_to_catbox(path)
+                except Exception:
+                    catbox_url = "This link could not be created for Catbox."
+
+                # Upload the file to envs.sh
+                try:
+                    envs_url = upload_to_envs(file_path=path, expires=24, secret="mysecret123")
+                except Exception:
+                    envs_url = "This link could not be created for Env.sh."
                 
-                # Upload the file to envs.sh using the local file path
-                envs_url = upload_to_envs(file_path=path, expires=24, secret="mysecret123")  # Example with expiry and secret
-                
+                # Upload the file to 0x0
+                try:
+                    x0_url = upload_to_0x0(path)
+                except Exception:
+                    x0_url = "This link could not be created for 0x0."
+
                 # Send both links to the user
                 await message.reply(
                     text=f"Yᴏᴜʀ ʟɪɴᴋs sᴜᴄᴄᴇssғᴜʟ Gᴇɴ:\n\n"
-                         f"1. Catbox Link: \n{catbox_url if catbox_url else 'Failed to upload to catbox_url'}\n\n"
-                         f"2. Env sh Link: {envs_url if envs_url else 'Failed to upload to envs sh'}"
+                         f"1. Catbox Link: \n{catbox_url}\n\n"
+                         f"2. Env sh Link: \n{envs_url}\n\n"
+                         f"3. 0x0 Link: \n{x0_url}"
                 )
                 
                 # Delete the processing message after the links are sent
