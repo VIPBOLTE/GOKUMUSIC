@@ -1,52 +1,109 @@
-import time
-import openai
-from pyrogram import filters
-from pyrogram.enums import ChatAction, ParseMode
+import asyncio
+import base64
+import mimetypes
+import os
+from pyrogram import filters, types as t
+from lexica import AsyncClient
 from GOKUMUSIC import app
+from lexica.constants import languageModels
+from typing import Union, Tuple
 
-# Replace this with your OpenAI API key
-openai.api_key = "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" # Replace with your actual OpenAI API key
-
-# Replace this with your bot's username
-BOT_USERNAME = app.me.username if app.me else "MyBot"
-
-@app.on_message(filters.command(["chatgpt", "ai", "ask", "gpt", "solve"], prefixes=["+", ".", "/", "-", "", "$", "#", "&"]))
-async def chat_gpt(bot, message):
-    """Fetch a response from OpenAI's GPT-3 and reply to the user."""
+# Use typing.Union for compatibility with Python versions < 3.10
+async def ChatCompletion(prompt, model) -> Union[Tuple[str, list], str]:
     try:
-        start_time = time.time()
-        await bot.send_chat_action(message.chat.id, ChatAction.TYPING)
+        modelInfo = getattr(languageModels, model)
+        client = AsyncClient()
+        output = await client.ChatCompletion(prompt, modelInfo)
+        if model == "bard":
+            return output['content'], output['images']
+        return output['content']
+    except Exception as E:
+        raise Exception(f"API error: {E}")
 
-        # Check if the command has a query
-        if len(message.command) < 2:
-            return await message.reply_text(
-                "Please provide a question.\n\nExample:\n`/chatgpt Where is Hastinapur?`",
-                parse_mode=ParseMode.MARKDOWN
-            )
+async def geminiVision(prompt, model, images) -> Union[Tuple[str, list], str]:
+    imageInfo = []
+    for image in images:
+        with open(image, "rb") as imageFile:
+            data = base64.b64encode(imageFile.read()).decode("utf-8")
+            mime_type, _ = mimetypes.guess_type(image)
+            imageInfo.append({
+                "data": data,
+                "mime_type": mime_type
+            })
+        os.remove(image)
+    payload = {
+        "images": imageInfo
+    }
+    modelInfo = getattr(languageModels, model)
+    client = AsyncClient()
+    output = await client.ChatCompletion(prompt, modelInfo, json=payload)
+    return output['content']['parts'][0]['text']
 
-        # Extract the query
-        query = message.text.split(' ', 1)[1]
+def getMedia(message):
+    """Extract Media"""
+    media = message.media if message.media else message.reply_to_message.media if message.reply_to_message else None
+    if message.media:
+        if message.photo:
+            media = message.photo
+        elif message.document and message.document.mime_type in ['image/png', 'image/jpg', 'image/jpeg'] and message.document.file_size < 5242880:
+            media = message.document
+        else:
+            media = None
+    elif message.reply_to_message and message.reply_to_message.media:
+        if message.reply_to_message.photo:
+            media = message.reply_to_message.photo
+        elif message.reply_to_message.document and message.reply_to_message.document.mime_type in ['image/png', 'image/jpg', 'image/jpeg'] and message.reply_to_message.document.file_size < 5242880:
+            media = message.reply_to_message.document
+        else:
+            media = None
+    else:
+        media = None
+    return media
 
-        # Call the OpenAI API for a response
+def getText(message):
+    """Extract Text From Commands"""
+    text_to_return = message.text
+    if message.text is None:
+        return None
+    if " " in text_to_return:
         try:
-            response = openai.Completion.create(
-                engine="text-davinci-003",  # Use "gpt-3.5-turbo" or another model if preferred
-                prompt=query,
-                max_tokens=150  # You can adjust the number of tokens for your needs
-            )
-            answer = response['choices'][0]['text'].strip()
-        except openai.error.OpenAIError as e:
-            return await message.reply_text(f"Error: {str(e)}")
+            return message.text.split(None, 1)[1]
+        except IndexError:
+            return None
+    else:
+        return None
 
-        # Measure the response time
-        end_time = time.time()
-        response_time = round((end_time - start_time) * 1000, 2)
-
-        # Reply with the answer
-        await message.reply_text(
-            f"**Question:** `{query}`\n\n**Answer:** {answer}\n\nResponse time: `{response_time} ms`\n\nAnswered by: [@{BOT_USERNAME}](https://t.me/{BOT_USERNAME})",
-            parse_mode=ParseMode.MARKDOWN
+@app.on_message(filters.command(["gpt", "bard", "llama", "mistral", "palm", "gemini"]))
+async def chatbots(_, m: t.Message):
+    prompt = getText(m)
+    media = getMedia(m)
+    if media is not None:
+        return await askAboutImage(_, m, [media], prompt)
+    if prompt is None:
+        return await m.reply_text("Hello, How can I assist you today?")
+    model = m.command[0].lower()
+    output = await ChatCompletion(prompt, model)
+    if model == "bard":
+        output, images = output
+        if len(images) == 0:
+            return await m.reply_text(output)
+        media = []
+        for i in images:
+            media.append(t.InputMediaPhoto(i))
+        media[0] = t.InputMediaPhoto(images[0], caption=output)
+        await _.send_media_group(
+            m.chat.id,
+            media,
+            reply_to_message_id=m.id
         )
+        return
+    await m.reply_text(output['parts'][0]['text'] if model == "gemini" else output)
 
-    except Exception as e:
-        await message.reply_text(f"Unexpected Error: {e}")
+async def askAboutImage(_, m: t.Message, mediaFiles: list, prompt: str):
+    images = []
+    for media in mediaFiles:
+        image = await _.download_media(media.file_id, file_name=f'./downloads/{m.from_user.id}_ask.jpg')
+        images.append(image)
+    output = await geminiVision(prompt if prompt else "What's this?", "geminiVision", images)
+    await m.reply_text(output)
+    
