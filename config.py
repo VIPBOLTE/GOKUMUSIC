@@ -51,6 +51,10 @@ HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
 # ----------------------------------------------------------------
 HEROKU_API_KEY = getenv("HEROKU_API_KEY")
 # ----------------------------------------------------------------
+
+API_URL = getenv("API_URL", 'https://api.nexgenbots.in') #youtube song url
+API_KEY = getenv("API_KEY", None) # youtube song api key, get it from https://t.me/RahulTC
+
 # ----------------------------------------------------------------
 # ----------------------------------------------------------------
 UPSTREAM_REPO = getenv(
